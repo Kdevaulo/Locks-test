@@ -1,9 +1,14 @@
 using System;
+using System.Threading;
 
-using Kdevaulo.LocksTest.Scripts.Utils;
+using Cysharp.Threading.Tasks;
+
+using DG.Tweening;
 
 using UnityEngine;
 using UnityEngine.UI;
+
+using Timer = Kdevaulo.LocksTest.Scripts.Utils.Timer;
 
 namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 {
@@ -50,9 +55,14 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
         [SerializeField] private ClickSoundPlayer _soundPlayer;
 
+        [SerializeField] private Transform _lockContainer;
+
+        private CancellationToken _cancellationToken;
+
         private void Awake()
         {
             _button.onClick.AddListener(HandleButtonClick);
+            _cancellationToken = this.GetCancellationTokenOnDestroy();
         }
 
         private void OnDestroy()
@@ -64,6 +74,21 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
         {
             _canvas.renderMode = RenderMode.ScreenSpaceCamera;
             _canvas.worldCamera = targetCamera;
+        }
+
+        GameObject ILockView.GetGameObject()
+        {
+            return gameObject;
+        }
+
+        public async UniTask DisappearAsync()
+        {
+            _text.enabled = false;
+            _button.enabled = false;
+
+            await UniTask.WhenAll(
+                _lockContainer.DORotate(new Vector3(0, 0, -180), 1f).WithCancellation(_cancellationToken),
+                _lockContainer.DOScale(Vector3.zero, 1f).WithCancellation(_cancellationToken));
         }
 
         public void SetText(string value)

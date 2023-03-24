@@ -1,21 +1,30 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Cysharp.Threading.Tasks;
 
 using Kdevaulo.LocksTest.Scripts.Utils;
 
 using UnityEngine;
 
+using Random = UnityEngine.Random;
+
 namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 {
     public class ClickLock : ILock
     {
+        public event Action LockOpened = delegate { };
+
         private readonly ClickLockView _lockView;
 
         private readonly Timer _moveLedTimer;
 
         private readonly Timer _openLockTimer;
 
-        private List<PinKit> _pinKits;
+        private readonly ClickSoundPlayer _soundPlayer;
+
+        private readonly List<PinKit> _pinKits;
 
         private readonly Color _closedLedColor;
 
@@ -26,8 +35,6 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
         private readonly float _minMoveDelay;
 
         private readonly int _openLockTime;
-
-        private ClickSoundPlayer _soundPlayer;
 
         private PinKit _currentKit;
 
@@ -101,12 +108,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
             _lockView.Clicked += HandleButtonClick;
         }
 
-        // todo: call after move to next lock
-        public void Dispose()
+        void ILock.Dispose()
         {
-            _moveLedTimer.StopTimer();
-            _openLockTimer.StopTimer();
-
             _moveLedTimer.Elapsed -= HandleMoveLedTimerElapsed;
             _openLockTimer.Elapsed -= HandleOpenLockTimerElapsed;
             _lockView.Clicked -= HandleButtonClick;
@@ -136,6 +139,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
                 _moveLedTimer.Elapsed -= HandleMoveLedTimerElapsed;
                 _openLockTimer.Elapsed -= HandleOpenLockTimerElapsed;
+                _lockView.Clicked -= HandleButtonClick;
             }
             else
             {
@@ -145,11 +149,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
         private void HandleButtonClick()
         {
-            var disabledKitsCount = GetDisabledKitsCount();
-
-            ChangeMoveLedSpeed(disabledKitsCount + _allKitsCount - _pinKits.Count);
-
-            _soundPlayer.PlayClickSound(_pinKits.Count - disabledKitsCount);
+            _soundPlayer.PlayClickSound(_pinKits.Count - GetDisabledKitsCount());
 
             _isLeftDirection = !_isLeftDirection;
 
@@ -166,13 +166,15 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
                 _currentKit.SetCorrectPinPosition();
             }
 
-            // note: when lock gets open
-            // in previous if block last kit deactivates, so this if statement is correct
+            var disabledKitsCount = GetDisabledKitsCount();
+            ChangeMoveLedSpeed(disabledKitsCount + _allKitsCount - _pinKits.Count);
 
-            if (disabledKitsCount == 1)
+            if (disabledKitsCount == 0)
             {
-                // todo: add finish logic
-                Dispose();
+                _moveLedTimer.StopTimer();
+                _openLockTimer.StopTimer();
+
+                _lockView.DisappearAsync().ContinueWith(LockOpened.Invoke);
             }
         }
 
