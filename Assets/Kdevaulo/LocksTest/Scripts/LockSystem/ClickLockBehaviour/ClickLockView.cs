@@ -22,6 +22,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
         public Timer OpenTimer => _openTimer;
         public Timer MoveTimer => _moveTimer;
 
+        public ClickSoundPlayer SoundPlayer => _soundPlayer;
+
         [SerializeField] private PinKit[] _pinKits;
 
         [SerializeField] private int _maxDefaultDisabledCount = 4;
@@ -45,6 +47,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
         [SerializeField] private Button _button;
 
         [SerializeField] private Canvas _canvas;
+
+        [SerializeField] private ClickSoundPlayer _soundPlayer;
 
         private void Awake()
         {

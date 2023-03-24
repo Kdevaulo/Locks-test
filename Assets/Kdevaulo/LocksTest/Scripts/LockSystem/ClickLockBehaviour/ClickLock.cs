@@ -27,6 +27,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
         private readonly int _openLockTime;
 
+        private ClickSoundPlayer _soundPlayer;
+
         private PinKit _currentKit;
 
         private PinKit _lastKit;
@@ -55,6 +57,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
             _moveLedDelayMultiplier = lockView.MoveLedDelayMultiplier;
             _minMoveDelay = lockView.MinMoveDelay;
             _moveLedTimer = lockView.MoveTimer;
+
+            _soundPlayer = lockView.SoundPlayer;
         }
 
         void ILock.Initialize()
@@ -155,6 +159,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
             var disabledKitsCount = GetDisabledKitsCount();
 
             ChangeMoveLedSpeed(disabledKitsCount + _allKitsCount - _pinKits.Count);
+
+            _soundPlayer.PlaySound(_pinKits.Count - disabledKitsCount);
 
             _isLeftDirection = !_isLeftDirection;
 
