@@ -120,6 +120,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
             TryChangeLastKitColor();
 
+            _soundPlayer.PlayMoveLedSound();
+
             _lastKit = _currentKit;
         }
 
@@ -143,6 +145,14 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
         private void HandleButtonClick()
         {
+            var disabledKitsCount = GetDisabledKitsCount();
+
+            ChangeMoveLedSpeed(disabledKitsCount + _allKitsCount - _pinKits.Count);
+
+            _soundPlayer.PlayClickSound(_pinKits.Count - disabledKitsCount);
+
+            _isLeftDirection = !_isLeftDirection;
+
             if (_currentKit.Activated)
             {
                 _currentKit.SetActive(false);
@@ -156,15 +166,10 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
                 _currentKit.SetCorrectPinPosition();
             }
 
-            var disabledKitsCount = GetDisabledKitsCount();
+            // note: when lock gets open
+            // in previous if block last kit deactivates, so this if statement is correct
 
-            ChangeMoveLedSpeed(disabledKitsCount + _allKitsCount - _pinKits.Count);
-
-            _soundPlayer.PlaySound(_pinKits.Count - disabledKitsCount);
-
-            _isLeftDirection = !_isLeftDirection;
-
-            if (disabledKitsCount == 0)
+            if (disabledKitsCount == 1)
             {
                 // todo: add finish logic
                 Dispose();
