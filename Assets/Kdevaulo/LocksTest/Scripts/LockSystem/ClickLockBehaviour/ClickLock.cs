@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+
 using Kdevaulo.LocksTest.Scripts.Utils;
 
 using UnityEngine;
@@ -8,23 +11,25 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
     {
         private readonly ClickLockView _lockView;
 
-        private Timer _moveLedTimer;
+        private readonly Timer _moveLedTimer;
 
-        private Timer _openLockTimer;
+        private readonly Timer _openLockTimer;
 
-        private PinKit[] _pinKits;
+        private List<PinKit> _pinKits;
 
-        private Color _closedLedColor;
+        private readonly Color _closedLedColor;
 
-        private Color _openedLedColor;
+        private readonly Color _openedLedColor;
+
+        private readonly float _moveLedDelayMultiplier;
+
+        private readonly float _minMoveDelay;
+
+        private readonly int _openLockTime;
 
         private PinKit _currentKit;
 
         private PinKit _lastKit;
-
-        private float _moveLedInterval;
-
-        private int _openLockTime;
 
         private int _openLockSecondsCounter;
 
@@ -32,25 +37,47 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
         private int _maxIndex;
 
+        private int _allKitsCount;
+
         private bool _isLeftDirection;
 
         public ClickLock(ClickLockView lockView)
         {
             _lockView = lockView;
-            _pinKits = lockView.PinKits;
-            _moveLedInterval = lockView.MoveInterval;
-            _openLockTime = lockView.OpenLockTime;
+            _pinKits = lockView.PinKits.ToList();
+
             _closedLedColor = lockView.ClosedLedColor;
             _openedLedColor = lockView.OpenedLedColor;
+
+            _openLockTime = lockView.OpenLockTime;
             _openLockTimer = lockView.OpenTimer;
+
+            _moveLedDelayMultiplier = lockView.MoveLedDelayMultiplier;
+            _minMoveDelay = lockView.MinMoveDelay;
             _moveLedTimer = lockView.MoveTimer;
         }
 
         void ILock.Initialize()
         {
-            _maxIndex = _pinKits.Length - 1;
+            _allKitsCount = _pinKits.Count;
 
-            _kitIndex = Random.Range(0, _pinKits.Length);
+            var defaultDisabledCount = Random.Range(0, _lockView.MaxDefaultDisabledCount + 1);
+
+            for (var i = 0; i < defaultDisabledCount; i++)
+            {
+                var index = Random.Range(0, _pinKits.Count);
+
+                var kit = _pinKits[index];
+                kit.SetCorrectPinPosition();
+
+                _pinKits.RemoveAt(index);
+            }
+
+            var enabledKitsCount = _pinKits.Count;
+
+            _maxIndex = _pinKits.Count - 1;
+
+            _kitIndex = Random.Range(0, enabledKitsCount);
 
             SetCurrentKit(_kitIndex);
 
@@ -62,7 +89,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
             _lockView.SetText(_openLockTime.ToString());
 
-            _moveLedTimer.StartTimer(_moveLedInterval);
+            ChangeMoveLedSpeed(_allKitsCount);
             _openLockTimer.StartTimer(1);
 
             _moveLedTimer.Elapsed += HandleMoveLedTimerElapsed;
@@ -125,10 +152,17 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
                 _currentKit.SetCorrectPinPosition();
             }
 
-            // todo: add speed up logic
-            // todo: add finish logic
+            var disabledKitsCount = GetDisabledKitsCount();
+
+            ChangeMoveLedSpeed(disabledKitsCount + _allKitsCount - _pinKits.Count);
 
             _isLeftDirection = !_isLeftDirection;
+
+            if (disabledKitsCount == 0)
+            {
+                // todo: add finish logic
+                Dispose();
+            }
         }
 
         private void ChangeKitIndex(bool decrease)
@@ -149,7 +183,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
         {
             _currentKit = _pinKits[index];
 
-            _currentKit.SetLedColor(_openedLedColor);
+            _currentKit.SetLedColor(_currentKit.Activated ? _closedLedColor : _openedLedColor);
         }
 
         private void TryChangeLastKitColor()
@@ -158,6 +192,16 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
             var targetColor = _lastKit.Activated ? _openedLedColor : _closedLedColor;
             _lastKit.SetLedColor(targetColor);
+        }
+
+        private void ChangeMoveLedSpeed(int disabledKitsCount)
+        {
+            _moveLedTimer.StartTimer(_minMoveDelay + _moveLedDelayMultiplier * disabledKitsCount);
+        }
+
+        private int GetDisabledKitsCount()
+        {
+            return _pinKits.Count(kit => !kit.Activated);
         }
     }
 }

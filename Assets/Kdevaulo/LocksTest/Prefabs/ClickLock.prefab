@@ -1259,7 +1259,8 @@ MonoBehaviour:
     _standartPoint: {fileID: 4632487113816474627}
     _correctPoint: {fileID: 5563353144336563852}
     _pin: {fileID: 7802830542375929244}
-  _moveInterval: 0.5
+  _moveLedDelayMultiplier: 0.05
+  _minMoveDelay: 0.03
   _openLockTime: 25
   _closedLedColor: {r: 1, g: 0, b: 0, a: 1}
   _openedLedColor: {r: 0, g: 1, b: 0, a: 1}

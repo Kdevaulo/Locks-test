@@ -1,6 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using UnityEngine;
+
+using Random = System.Random;
 
 namespace Kdevaulo.LocksTest.Scripts.Utils
 {
@@ -16,6 +19,9 @@ namespace Kdevaulo.LocksTest.Scripts.Utils
 
         private Random random = new Random();
 
+        /// <summary>
+        /// Provides unique random values in range [min;max)
+        /// </summary>
         /// <param name="minValue">inclusive</param>
         /// <param name="maxValue">exclusive</param>
         public Randomizer(int minValue, int maxValue)
@@ -47,6 +53,7 @@ namespace Kdevaulo.LocksTest.Scripts.Utils
             if (_index >= _values.Count)
             {
                 Generate();
+                Debug.Log("Unique values run out. Shuffle is done.");
             }
 
             return _values[_index++];

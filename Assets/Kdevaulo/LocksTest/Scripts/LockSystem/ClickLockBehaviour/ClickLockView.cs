@@ -13,7 +13,9 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
         public event Action Clicked = delegate { };
 
         public PinKit[] PinKits => _pinKits;
-        public float MoveInterval => _moveInterval;
+        public int MaxDefaultDisabledCount => _maxDefaultDisabledCount;
+        public float MoveLedDelayMultiplier => _moveLedDelayMultiplier;
+        public float MinMoveDelay => _minMoveDelay;
         public int OpenLockTime => _openLockTime;
         public Color ClosedLedColor => _closedLedColor;
         public Color OpenedLedColor => _openedLedColor;
@@ -22,9 +24,13 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
         [SerializeField] private PinKit[] _pinKits;
 
-        [SerializeField] private float _moveInterval;
+        [SerializeField] private int _maxDefaultDisabledCount = 4;
 
-        [SerializeField] private int _openLockTime;
+        [SerializeField] private float _moveLedDelayMultiplier = 0.05f;
+
+        [SerializeField] private float _minMoveDelay = 0.05f;
+
+        [SerializeField] private int _openLockTime = 25;
 
         [SerializeField] private Color _closedLedColor;
 
