@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lockPrefabs:
+  - {fileID: 116083751753647127, guid: 70be5e63195d1294899ea10d8ec51c1d, type: 3}
   - {fileID: 4286644206407858126, guid: b9799d96accde62468abe4452702e5d6, type: 3}
   _mainCamera: {fileID: 963194227}
 --- !u!4 &213044560

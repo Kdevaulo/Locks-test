@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Kdevaulo.LocksTest.Scripts.LockSystem
 {
@@ -12,9 +9,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
 
         [SerializeField] private Camera _mainCamera;
 
-        private List<ILockView> _lockViews = new List<ILockView>();
-
-        private LocksContainer _locksContainer = new LocksContainer();
+        private readonly LocksContainer _locksContainer = new LocksContainer();
 
         private LocksController _locksController;
 
@@ -25,18 +20,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
 
         private void Start()
         {
-            foreach (var lockPrefab in _lockPrefabs)
-            {
-                var lockInstance = Instantiate(lockPrefab, transform);
-
-                lockInstance.TryGetComponent(out ILockView lockBehaviour);
-
-                Assert.IsNotNull(lockBehaviour);
-
-                _lockViews.Add(lockBehaviour);
-            }
-
-            _locksController.Initialize(_lockViews);
+            _locksController.Initialize(_lockPrefabs);
         }
     }
 }

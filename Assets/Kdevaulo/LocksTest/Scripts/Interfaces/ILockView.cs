@@ -4,7 +4,7 @@ namespace Kdevaulo.LocksTest.Scripts
 {
     public interface ILockView
     {
-        void SetCamera(Camera camera);
+        void SetCamera(Camera targetCamera);
         GameObject GetGameObject();
     }
 }

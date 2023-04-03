@@ -171,11 +171,16 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
             if (disabledKitsCount == 0)
             {
-                _moveLedTimer.StopTimer();
-                _openLockTimer.StopTimer();
-
-                _lockView.DisappearAsync().ContinueWith(LockOpened.Invoke);
+                HandleLockOpened();
             }
+        }
+
+        private void HandleLockOpened()
+        {
+            _moveLedTimer.StopTimer();
+            _openLockTimer.StopTimer();
+
+            _lockView.DisappearAsync().ContinueWith(LockOpened.Invoke);
         }
 
         private void ChangeKitIndex(bool decrease)

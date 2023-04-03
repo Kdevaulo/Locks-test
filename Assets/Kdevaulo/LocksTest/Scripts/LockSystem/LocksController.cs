@@ -1,9 +1,9 @@
 using System;
-using System.Collections.Generic;
 
 using Kdevaulo.LocksTest.Scripts.Utils;
 
 using UnityEngine;
+using UnityEngine.Assertions;
 
 using Object = UnityEngine.Object;
 
@@ -21,7 +21,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
 
         private ILockView _currentLockView;
 
-        private List<ILockView> _lockViews;
+        private GameObject[] _lockViewPrefabs;
 
         public LocksController(LocksContainer container, Camera mainCamera)
         {
@@ -29,11 +29,11 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
             _mainCamera = mainCamera;
         }
 
-        public void Initialize(List<ILockView> lockViews)
+        public void Initialize(GameObject[] lockViewPrefabs)
         {
-            _lockViews = lockViews;
+            _lockViewPrefabs = lockViewPrefabs;
 
-            _randomizer = new Randomizer(0, _lockViews.Count);
+            _randomizer = new Randomizer(0, _lockViewPrefabs.Length);
 
             InitializeNewLock();
         }
@@ -50,7 +50,13 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
                 Object.Destroy(gameObject);
             }
 
-            _currentLockView = _lockViews[_randomizer.GetValue()];
+            var lockViewPrefab = _lockViewPrefabs[_randomizer.GetValue()];
+
+            var viewGameObject = Object.Instantiate(lockViewPrefab);
+
+            _currentLockView = viewGameObject.GetComponent<ILockView>();
+
+            Assert.IsNotNull(_currentLockView);
 
             _currentLockView.SetCamera(_mainCamera);
 
