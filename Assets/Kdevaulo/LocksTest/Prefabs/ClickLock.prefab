@@ -751,6 +751,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d8f938e7a2b815845ad155be242c3b7b, type: 3}
   - {fileID: 8300000, guid: 9c6743a340f8dbd49a9a390b7a166adc, type: 3}
   - {fileID: 8300000, guid: 6d0fced10d632884abf1b2df81951314, type: 3}
+  - {fileID: 8300000, guid: bdfab6b39c451ef4ebf49e96d06069ee, type: 3}
   _tickAudioClip: {fileID: 8300000, guid: 589c0c01e1f0c5746bd7b4b3345f4905, type: 3}
 --- !u!1 &2459910976265231061
 GameObject:
