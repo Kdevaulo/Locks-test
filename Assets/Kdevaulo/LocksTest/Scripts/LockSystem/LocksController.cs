@@ -45,6 +45,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
                 _currentLock.LockOpened -= InitializeNewLock;
                 _currentLock.Dispose();
 
+                _currentLockView.Dispose();
+
                 var gameObject = _currentLockView.GetGameObject();
                 gameObject.SetActive(false);
                 Object.Destroy(gameObject);

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 using Cysharp.Threading.Tasks;
@@ -14,13 +15,18 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
     {
         public event Action<float> Moved = delegate { };
         public event Action<bool> OpenLockPressed = delegate { };
+        public event Action OpenLockStarted = delegate { };
+        public event Action OpenLockEnded = delegate { };
         public event Action LockOpened = delegate { };
 
+        public CylinderLockSoundPlayer SoundPlayer => _soundPlayer;
         public float StartAngle => _startAngle;
         public float MinMaxRotationOffset => _minMaxRotationOffset;
         public float OpenAngleOffset => _openAngleOffset;
         public float MaxAngleOffset => _maxAngleOffset;
         public Vector2 LockOpenRange => _lockOpenRange;
+
+        [SerializeField] private CylinderLockSoundPlayer _soundPlayer;
 
         [SerializeField] private Transform _keyholeRotationContainer;
 
@@ -47,19 +53,32 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
 
         [SerializeField] private float _lockRotationSpeed = 10f;
 
+        [Header("Other settings")]
+        [SerializeField] private float _beforeDisappearDelay = 0.5f;
+
         private float _currentRotationProgress = 0f;
 
-        private CancellationToken _cancellationToken;
+        private CancellationTokenSource _cts;
 
         private void Awake()
         {
-            _cancellationToken = this.GetCancellationTokenOnDestroy();
+            _cts = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
         }
 
         void ILockView.SetCamera(Camera targetCamera)
         {
             _canvas.renderMode = RenderMode.ScreenSpaceCamera;
             _canvas.worldCamera = targetCamera;
+        }
+
+        void ILockView.Dispose()
+        {
+            if (_cts != null && !_cts.IsCancellationRequested)
+            {
+                _cts.Cancel();
+                _cts.Dispose();
+                _cts = null;
+            }
         }
 
         GameObject ILockView.GetGameObject()
@@ -69,10 +88,11 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
 
         public async UniTask DisappearAsync()
         {
-            
-            await UniTask.WhenAll(
-                _lockContainer.DORotate(new Vector3(0, 0, -180), 1f).WithCancellation(_cancellationToken),
-                _lockContainer.DOScale(Vector3.zero, 1f).WithCancellation(_cancellationToken));
+            await UniTask.Delay(TimeSpan.FromSeconds(_beforeDisappearDelay), cancellationToken: _cts.Token);
+
+            await UniTask.WhenAll(_lockContainer.DORotate(new Vector3(0, 0, -180), 1f).SetEase(Ease.Linear)
+                    .WithCancellation(_cts.Token),
+                _lockContainer.DOScale(Vector3.zero, 1f).SetEase(Ease.Linear).WithCancellation(_cts.Token));
         }
 
         public void MoveLockPick(float value)
@@ -114,6 +134,18 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
 
         private void RotateKeyholeContainer(float directionMultiplier, float rotationPercentage)
         {
+            if (_currentRotationProgress == 0)
+            {
+                if (directionMultiplier == 1)
+                {
+                    OpenLockStarted.Invoke();
+                }
+                else
+                {
+                    OpenLockEnded.Invoke();
+                }
+            }
+
             _currentRotationProgress =
                 Mathf.Clamp01(_currentRotationProgress + Time.deltaTime * directionMultiplier * _lockRotationSpeed);
 

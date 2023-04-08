@@ -17,7 +17,7 @@ namespace Kdevaulo.LocksTest.Scripts.Utils
 
         private int _index = 0;
 
-        private Random random = new Random();
+        private readonly Random _random = new Random();
 
         /// <summary>
         /// Provides unique random values in range [min;max)
@@ -34,6 +34,17 @@ namespace Kdevaulo.LocksTest.Scripts.Utils
             Generate();
         }
 
+        public int GetValue()
+        {
+            if (_index >= _values.Count)
+            {
+                Generate();
+                Debug.Log("Unique values run out. Shuffle is done.");
+            }
+
+            return _values[_index++];
+        }
+
         public void Generate()
         {
             _index = 0;
@@ -48,20 +59,9 @@ namespace Kdevaulo.LocksTest.Scripts.Utils
             _values = Shuffle(_values);
         }
 
-        public int GetValue()
-        {
-            if (_index >= _values.Count)
-            {
-                Generate();
-                Debug.Log("Unique values run out. Shuffle is done.");
-            }
-
-            return _values[_index++];
-        }
-
         private List<int> Shuffle(List<int> values)
         {
-            return values.OrderBy(x => random.Next()).ToList();
+            return values.OrderBy(x => _random.Next()).ToList();
         }
     }
 }

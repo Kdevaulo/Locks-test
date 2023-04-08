@@ -149,8 +149,6 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
         private void HandleButtonClick()
         {
-            _soundPlayer.PlayClickSound(_pinKits.Count - GetDisabledKitsCount());
-
             _isLeftDirection = !_isLeftDirection;
 
             if (_currentKit.Activated)
@@ -167,6 +165,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
             }
 
             var disabledKitsCount = GetDisabledKitsCount();
+            _soundPlayer.PlayClickSound(_pinKits.Count - disabledKitsCount);
+            
             ChangeMoveLedSpeed(disabledKitsCount + _allKitsCount - _pinKits.Count);
 
             if (disabledKitsCount == 0)

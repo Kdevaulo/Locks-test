@@ -16,6 +16,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
 
         private readonly CylinderLockView _lockView;
 
+        private readonly CylinderLockSoundPlayer _soundPlayer;
+
         private readonly float _startAngle;
 
         private readonly float _minMaxRotationOffset;
@@ -28,16 +30,19 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
 
         private int _currentOpenPercentage;
 
-        private bool _currentLockKeyPressed;
+        private bool _isLockOpening;
 
         private bool _lockOpened;
 
         public CylinderLock(CylinderLockView lockView)
         {
             _lockView = lockView;
+
             _minMaxRotationOffset = lockView.MinMaxRotationOffset;
             _lockOpenRange = lockView.LockOpenRange;
             _maxAngleOffset = lockView.MaxAngleOffset;
+
+            _soundPlayer = lockView.SoundPlayer;
 
             _startAngle = ClampAngle(lockView.StartAngle);
         }
@@ -47,6 +52,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
             _lockView.LockOpened += HandleLockOpened;
             _lockView.Moved += HandleLockPickMoved;
             _lockView.OpenLockPressed += HandleOpenLockKey;
+            _lockView.OpenLockStarted += HandleOpenLockStarted;
+            _lockView.OpenLockEnded += HandleOpenLockEnded;
 
             _lockView.SetToolZRotation(_startAngle);
 
@@ -58,6 +65,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
             _lockView.LockOpened -= HandleLockOpened;
             _lockView.Moved -= HandleLockPickMoved;
             _lockView.OpenLockPressed -= HandleOpenLockKey;
+            _lockView.OpenLockStarted -= HandleOpenLockStarted;
+            _lockView.OpenLockEnded -= HandleOpenLockEnded;
         }
 
         private void ChooseRandomAngle()
@@ -69,6 +78,9 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
 
         private void HandleLockOpened()
         {
+            _lockOpened = true;
+
+            _soundPlayer.PlayOpenSound();
             _lockView.DisappearAsync().ContinueWith(LockOpened.Invoke);
         }
 
@@ -78,8 +90,6 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
             {
                 return;
             }
-
-            _currentLockKeyPressed = value;
 
             if (value)
             {
@@ -91,9 +101,21 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
             }
         }
 
+        private void HandleOpenLockStarted()
+        {
+            _isLockOpening = true;
+
+            _soundPlayer.PlayRotateSound();
+        }
+
+        private void HandleOpenLockEnded()
+        {
+            _isLockOpening = false;
+        }
+
         private void HandleLockPickMoved(float value)
         {
-            if (_currentLockKeyPressed || _lockOpened)
+            if (_isLockOpening || _lockOpened)
             {
                 return;
             }

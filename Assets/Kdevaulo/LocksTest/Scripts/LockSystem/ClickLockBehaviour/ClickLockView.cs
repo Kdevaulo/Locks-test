@@ -39,6 +39,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
         [SerializeField] private int _openLockTime = 25;
 
+        [SerializeField] private float _beforeDisappearDelay = 0.5f;
+
         [SerializeField] private Color _closedLedColor;
 
         [SerializeField] private Color _openedLedColor;
@@ -57,23 +59,31 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
         [SerializeField] private Transform _lockContainer;
 
-        private CancellationToken _cancellationToken;
+        private CancellationTokenSource _cts;
 
         private void Awake()
         {
             _button.onClick.AddListener(HandleButtonClick);
-            _cancellationToken = this.GetCancellationTokenOnDestroy();
-        }
 
-        private void OnDestroy()
-        {
-            _button.onClick.RemoveListener(HandleButtonClick);
+            _cts = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
         }
 
         void ILockView.SetCamera(Camera targetCamera)
         {
             _canvas.renderMode = RenderMode.ScreenSpaceCamera;
             _canvas.worldCamera = targetCamera;
+        }
+
+        void ILockView.Dispose()
+        {
+            _button.onClick.RemoveListener(HandleButtonClick);
+
+            if (_cts != null && !_cts.IsCancellationRequested)
+            {
+                _cts.Cancel();
+                _cts.Dispose();
+                _cts = null;
+            }
         }
 
         GameObject ILockView.GetGameObject()
@@ -86,9 +96,11 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
             _text.enabled = false;
             _button.enabled = false;
 
-            await UniTask.WhenAll(
-                _lockContainer.DORotate(new Vector3(0, 0, -180), 1f).WithCancellation(_cancellationToken),
-                _lockContainer.DOScale(Vector3.zero, 1f).WithCancellation(_cancellationToken));
+            await UniTask.Delay(TimeSpan.FromSeconds(_beforeDisappearDelay), cancellationToken: _cts.Token);
+
+            await UniTask.WhenAll(_lockContainer.DORotate(new Vector3(0, 0, -180), 1f).SetEase(Ease.Linear)
+                    .WithCancellation(_cts.Token),
+                _lockContainer.DOScale(Vector3.zero, 1f).SetEase(Ease.Linear).WithCancellation(_cts.Token));
         }
 
         public void SetText(string value)
