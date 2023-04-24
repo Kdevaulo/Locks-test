@@ -50,10 +50,10 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
         void ILock.Initialize()
         {
             _lockView.LockOpened += HandleLockOpened;
-            _lockView.Moved += HandleLockPickMoved;
             _lockView.OpenLockPressed += HandleOpenLockKey;
             _lockView.OpenLockStarted += HandleOpenLockStarted;
             _lockView.OpenLockEnded += HandleOpenLockEnded;
+            _lockView.Moved += HandleLockPickMoved;
 
             _lockView.SetToolZRotation(_startAngle);
 
@@ -63,10 +63,10 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
         void ILock.Dispose()
         {
             _lockView.LockOpened -= HandleLockOpened;
-            _lockView.Moved -= HandleLockPickMoved;
             _lockView.OpenLockPressed -= HandleOpenLockKey;
             _lockView.OpenLockStarted -= HandleOpenLockStarted;
             _lockView.OpenLockEnded -= HandleOpenLockEnded;
+            _lockView.Moved -= HandleLockPickMoved;
         }
 
         private void ChooseRandomAngle()
@@ -154,6 +154,21 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
             return targetAngle >= minAngle && targetAngle <= maxAngle ? value : 0;
         }
 
+        private float ClampAngle(float angle)
+        {
+            if (angle < 0)
+            {
+                return MaxAngle + angle;
+            }
+
+            if (angle <= MaxAngle)
+            {
+                return angle;
+            }
+
+            return angle % MaxAngle;
+        }
+
         private int CalculateCloseToTargetPercentage(float currentAngle)
         {
             var minOpenAngle = _minMaxOpenAngle.x;
@@ -178,21 +193,6 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
             var percent = (int) ((_maxAngleOffset - distance) * 100 / _maxAngleOffset);
 
             return percent;
-        }
-
-        private float ClampAngle(float angle)
-        {
-            if (angle < 0)
-            {
-                return MaxAngle + angle;
-            }
-
-            if (angle <= MaxAngle)
-            {
-                return angle;
-            }
-
-            return angle % MaxAngle;
         }
     }
 }
