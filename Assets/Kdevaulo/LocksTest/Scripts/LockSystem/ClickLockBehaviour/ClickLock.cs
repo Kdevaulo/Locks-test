@@ -72,6 +72,34 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
         {
             _allKitsCount = _pinKits.Count;
 
+            RemoveRandomPinsFromKits();
+
+            var enabledKitsCount = _pinKits.Count;
+
+            _maxIndex = _pinKits.Count - 1;
+
+            _kitIndex = Random.Range(0, enabledKitsCount);
+
+            SetCurrentKit(_kitIndex);
+
+            InitializePinKits();
+
+            _openLockSecondsCounter = _openLockTime;
+            _lockView.SetText(_openLockTime.ToString());
+
+            ChangeMoveLedSpeed(_allKitsCount);
+            _openLockTimer.StartTimer(1);
+
+            SubscribeEvents();
+        }
+
+        void ILock.Dispose()
+        {
+            UnsubscribeEvents();
+        }
+
+        private void RemoveRandomPinsFromKits()
+        {
             var defaultDisabledCount = Random.Range(0, _lockView.MaxDefaultDisabledCount + 1);
 
             for (var i = 0; i < defaultDisabledCount; i++)
@@ -83,36 +111,22 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
                 _pinKits.RemoveAt(index);
             }
+        }
 
-            var enabledKitsCount = _pinKits.Count;
-
-            _maxIndex = _pinKits.Count - 1;
-
-            _kitIndex = Random.Range(0, enabledKitsCount);
-
-            SetCurrentKit(_kitIndex);
-
+        private void InitializePinKits()
+        {
             foreach (var kit in _pinKits)
             {
                 kit.SetLedColor(_closedLedColor);
                 kit.SetStandartPinPosition();
             }
+        }
 
-            _lockView.SetText(_openLockTime.ToString());
-
-            ChangeMoveLedSpeed(_allKitsCount);
-            _openLockTimer.StartTimer(1);
-
+        private void SubscribeEvents()
+        {
             _moveLedTimer.Elapsed += HandleMoveLedTimerElapsed;
             _openLockTimer.Elapsed += HandleOpenLockTimerElapsed;
             _lockView.Clicked += HandleButtonClick;
-        }
-
-        void ILock.Dispose()
-        {
-            _moveLedTimer.Elapsed -= HandleMoveLedTimerElapsed;
-            _openLockTimer.Elapsed -= HandleOpenLockTimerElapsed;
-            _lockView.Clicked -= HandleButtonClick;
         }
 
         private void HandleMoveLedTimerElapsed()
@@ -126,61 +140,6 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
             _soundPlayer.PlayMoveLedSound();
 
             _lastKit = _currentKit;
-        }
-
-        private void HandleOpenLockTimerElapsed()
-        {
-            if (++_openLockSecondsCounter >= _openLockTime)
-            {
-                _lockView.SetText("Time is up");
-
-                _openLockTimer.StopTimer();
-                _moveLedTimer.StopTimer();
-
-                _moveLedTimer.Elapsed -= HandleMoveLedTimerElapsed;
-                _openLockTimer.Elapsed -= HandleOpenLockTimerElapsed;
-                _lockView.Clicked -= HandleButtonClick;
-            }
-            else
-            {
-                _lockView.SetText((_openLockTime - _openLockSecondsCounter).ToString());
-            }
-        }
-
-        private void HandleButtonClick()
-        {
-            _isLeftDirection = !_isLeftDirection;
-
-            if (_currentKit.Activated)
-            {
-                _currentKit.SetActive(false);
-                _currentKit.SetLedColor(_closedLedColor);
-                _currentKit.SetStandartPinPosition();
-            }
-            else
-            {
-                _currentKit.SetActive(true);
-                _currentKit.SetLedColor(_openedLedColor);
-                _currentKit.SetCorrectPinPosition();
-            }
-
-            var disabledKitsCount = GetDisabledKitsCount();
-            _soundPlayer.PlayClickSound(_pinKits.Count - disabledKitsCount);
-            
-            ChangeMoveLedSpeed(disabledKitsCount + _allKitsCount - _pinKits.Count);
-
-            if (disabledKitsCount == 0)
-            {
-                HandleLockOpened();
-            }
-        }
-
-        private void HandleLockOpened()
-        {
-            _moveLedTimer.StopTimer();
-            _openLockTimer.StopTimer();
-
-            _lockView.DisappearAsync().ContinueWith(LockOpened.Invoke);
         }
 
         private void ChangeKitIndex(bool decrease)
@@ -212,14 +171,94 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
             _lastKit.SetLedColor(targetColor);
         }
 
-        private void ChangeMoveLedSpeed(int disabledKitsCount)
+        private void HandleOpenLockTimerElapsed()
         {
-            _moveLedTimer.StartTimer(_minMoveDelay + _moveLedDelayMultiplier * disabledKitsCount);
+            if (--_openLockSecondsCounter <= 0)
+            {
+                HandleLockTimeIsUp();
+            }
+            else
+            {
+                _lockView.SetText(_openLockSecondsCounter.ToString());
+            }
+        }
+
+        private void HandleLockTimeIsUp()
+        {
+            _lockView.SetText(ClickLockConstants.TimeOverText);
+            _lockView.DisableInteractionButton();
+
+            StopTimers();
+
+            UnsubscribeEvents();
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _moveLedTimer.Elapsed -= HandleMoveLedTimerElapsed;
+            _openLockTimer.Elapsed -= HandleOpenLockTimerElapsed;
+            _lockView.Clicked -= HandleButtonClick;
+        }
+
+        private void HandleButtonClick()
+        {
+            _isLeftDirection = !_isLeftDirection;
+
+            if (_currentKit.Activated)
+            {
+                DisableCurrentKit();
+            }
+            else
+            {
+                EnableCurrentKit();
+            }
+
+            var disabledKitsCount = GetDisabledKitsCount();
+            _soundPlayer.PlayClickSound(_pinKits.Count - disabledKitsCount);
+
+            ChangeMoveLedSpeed(disabledKitsCount + _allKitsCount - _pinKits.Count);
+
+            if (disabledKitsCount == 0)
+            {
+                HandleLockOpened();
+            }
+        }
+
+        private void DisableCurrentKit()
+        {
+            _currentKit.SetActive(false);
+            _currentKit.SetLedColor(_closedLedColor);
+            _currentKit.SetStandartPinPosition();
+        }
+
+        private void EnableCurrentKit()
+        {
+            _currentKit.SetActive(true);
+            _currentKit.SetLedColor(_openedLedColor);
+            _currentKit.SetCorrectPinPosition();
         }
 
         private int GetDisabledKitsCount()
         {
             return _pinKits.Count(kit => !kit.Activated);
+        }
+
+        private void ChangeMoveLedSpeed(int disabledKitsCount)
+        {
+            _moveLedTimer.StartTimer(_minMoveDelay + _moveLedDelayMultiplier * disabledKitsCount);
+        }
+
+        private void HandleLockOpened()
+        {
+            StopTimers();
+
+            _lockView.DisappearAsync().ContinueWith(LockOpened.Invoke);
+        }
+
+        private void StopTimers()
+        {
+            _moveLedTimer.StopTimer();
+            _openLockTimer.StopTimer();
         }
     }
 }

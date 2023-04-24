@@ -8,6 +8,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Object = System.Object;
 using Timer = Kdevaulo.LocksTest.Scripts.Utils.Timer;
 
 namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
@@ -51,7 +52,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
         [SerializeField] private Text _text;
 
-        [SerializeField] private Button _button;
+        [SerializeField] private Button _interactionButton;
 
         [SerializeField] private Canvas _canvas;
 
@@ -63,7 +64,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
         private void Awake()
         {
-            _button.onClick.AddListener(HandleButtonClick);
+            _interactionButton.onClick.AddListener(HandleButtonClick);
 
             _cts = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
         }
@@ -76,7 +77,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
         void ILockView.Dispose()
         {
-            _button.onClick.RemoveListener(HandleButtonClick);
+            _interactionButton.onClick.RemoveListener(HandleButtonClick);
 
             if (_cts != null && !_cts.IsCancellationRequested)
             {
@@ -86,15 +87,16 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
             }
         }
 
-        GameObject ILockView.GetGameObject()
+        void ILockView.DestroyGameObject()
         {
-            return gameObject;
+            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
 
         public async UniTask DisappearAsync()
         {
             _text.enabled = false;
-            _button.enabled = false;
+            _interactionButton.enabled = false;
 
             await UniTask.Delay(TimeSpan.FromSeconds(_beforeDisappearDelay), cancellationToken: _cts.Token);
 
@@ -106,6 +108,11 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
         public void SetText(string value)
         {
             _text.text = value;
+        }
+
+        public void DisableInteractionButton()
+        {
+            _interactionButton.gameObject.SetActive(false);
         }
 
         private void HandleButtonClick()

@@ -81,9 +81,10 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
             }
         }
 
-        GameObject ILockView.GetGameObject()
+        void ILockView.DestroyGameObject()
         {
-            return gameObject;
+            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
 
         public async UniTask DisappearAsync()

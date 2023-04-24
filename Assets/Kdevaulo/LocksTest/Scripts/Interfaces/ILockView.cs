@@ -6,6 +6,6 @@ namespace Kdevaulo.LocksTest.Scripts
     {
         void SetCamera(Camera targetCamera);
         void Dispose();
-        GameObject GetGameObject();
+        void DestroyGameObject();
     }
 }

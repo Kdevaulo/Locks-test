@@ -42,16 +42,31 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
         {
             if (_currentLock != null)
             {
-                _currentLock.LockOpened -= InitializeNewLock;
-                _currentLock.Dispose();
-
-                _currentLockView.Dispose();
-
-                var gameObject = _currentLockView.GetGameObject();
-                gameObject.SetActive(false);
-                Object.Destroy(gameObject);
+                DestroyCurrentLock();
             }
 
+            CreateLockView();
+
+            CreateLock();
+
+            _currentLockView.SetCamera(_mainCamera);
+
+            _currentLock.LockOpened += InitializeNewLock;
+            _currentLock.Initialize();
+        }
+
+        private void DestroyCurrentLock()
+        {
+            _currentLock.LockOpened -= InitializeNewLock;
+            _currentLock.Dispose();
+
+            _currentLockView.Dispose();
+
+            _currentLockView.DestroyGameObject();
+        }
+
+        private void CreateLockView()
+        {
             var lockViewPrefab = _lockViewPrefabs[_randomizer.GetValue()];
 
             var viewGameObject = Object.Instantiate(lockViewPrefab);
@@ -59,16 +74,13 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
             _currentLockView = viewGameObject.GetComponent<ILockView>();
 
             Assert.IsNotNull(_currentLockView);
+        }
 
-            _currentLockView.SetCamera(_mainCamera);
-
+        private void CreateLock()
+        {
             var currentLockType = _container.GetLockTypeByView(_currentLockView.GetType());
 
             _currentLock = (ILock) Activator.CreateInstance(currentLockType, args: _currentLockView);
-
-            _currentLock.LockOpened += InitializeNewLock;
-
-            _currentLock.Initialize();
         }
     }
 }
