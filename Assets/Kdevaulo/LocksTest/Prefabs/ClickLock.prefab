@@ -1448,12 +1448,13 @@ MonoBehaviour:
   _moveLedDelayMultiplier: 0.05
   _minMoveDelay: 0.03
   _openLockTime: 25
+  _beforeDisappearDelay: 0.5
   _closedLedColor: {r: 1, g: 0, b: 0, a: 1}
   _openedLedColor: {r: 0, g: 1, b: 0, a: 1}
   _openTimer: {fileID: 6158784242773708659}
   _moveTimer: {fileID: 560377453790754410}
   _text: {fileID: 542295367782057161}
-  _button: {fileID: 390349696070595764}
+  _interactionButton: {fileID: 390349696070595764}
   _canvas: {fileID: 792801815245511055}
   _soundPlayer: {fileID: 5013758980998707737}
   _lockContainer: {fileID: 4475426997361082351}
