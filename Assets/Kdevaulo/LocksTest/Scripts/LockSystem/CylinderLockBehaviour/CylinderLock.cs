@@ -50,7 +50,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
         void ILock.Initialize()
         {
             _lockView.LockOpened += HandleLockOpened;
-            _lockView.OpenLockPressed += HandleOpenLockKey;
+            _lockView.OpenLockPressed += HandleOpenLockKeyPressed;
             _lockView.OpenLockStarted += HandleOpenLockStarted;
             _lockView.OpenLockEnded += HandleOpenLockEnded;
             _lockView.Moved += HandleLockPickMoved;
@@ -63,7 +63,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
         void ILock.Dispose()
         {
             _lockView.LockOpened -= HandleLockOpened;
-            _lockView.OpenLockPressed -= HandleOpenLockKey;
+            _lockView.OpenLockPressed -= HandleOpenLockKeyPressed;
             _lockView.OpenLockStarted -= HandleOpenLockStarted;
             _lockView.OpenLockEnded -= HandleOpenLockEnded;
             _lockView.Moved -= HandleLockPickMoved;
@@ -84,7 +84,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
             _lockView.DisappearAsync().ContinueWith(LockOpened.Invoke);
         }
 
-        private void HandleOpenLockKey(bool value)
+        private void HandleOpenLockKeyPressed(bool value)
         {
             if (_lockOpened)
             {
@@ -174,14 +174,15 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
             var minOpenAngle = _minMaxOpenAngle.x;
             var maxOpenAngle = _minMaxOpenAngle.y;
 
-            float distance = 0;
+            var openDistance = maxOpenAngle - minOpenAngle;
 
-            if (currentAngle >= minOpenAngle && currentAngle <= maxOpenAngle)
+            if (currentAngle >= minOpenAngle && currentAngle <= maxOpenAngle ||
+                minOpenAngle < 0 && minOpenAngle > -openDistance && currentAngle > MaxAngle - openDistance)
             {
                 return 100;
             }
 
-            distance = currentAngle < minOpenAngle
+            float distance = currentAngle < minOpenAngle
                 ? Mathf.Min(minOpenAngle - currentAngle, currentAngle + MaxAngle - maxOpenAngle)
                 : Mathf.Min(currentAngle - maxOpenAngle, minOpenAngle + MaxAngle - currentAngle);
 
