@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 
 using Cysharp.Threading.Tasks;
@@ -39,14 +38,17 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
         [Header("Lockpick settings")]
         [SerializeField] private float _startAngle = 90f;
 
-        [Min(0)]
+        [Min(0), Tooltip("Lockpick range from startAngle")]
         [SerializeField] private float _minMaxRotationOffset = 160f;
 
-        [SerializeField] private float _openAngleOffset = 50f;
+        [Tooltip("Offset between minOpenAngle and maxOpenAngle")]
+        [SerializeField] private float _openAngleOffset = 20f;
 
+        [Tooltip("Range of the lockpick from lockOpenRange after which the animation does not turn on")]
         [SerializeField] private float _maxAngleOffset = 70f;
 
-        [SerializeField] private Vector2 _lockOpenRange = new Vector2(20, 40);
+        [Tooltip("Range for minOpenAngle")]
+        [SerializeField] private Vector2 _lockOpenRange = new Vector2(-20, 200);
 
         [Header("LockCylinderSettings")]
         [SerializeField] private float _lockRotationAngle = -90;
@@ -147,8 +149,11 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
                 }
             }
 
+            var percentageSpeedMultiplier = 100 / rotationPercentage;
+
             _currentRotationProgress =
-                Mathf.Clamp01(_currentRotationProgress + Time.deltaTime * directionMultiplier * _lockRotationSpeed);
+                Mathf.Clamp01(_currentRotationProgress +
+                              Time.deltaTime * directionMultiplier * _lockRotationSpeed * percentageSpeedMultiplier);
 
             var rotation = Quaternion.Lerp(Quaternion.identity,
                 Quaternion.Euler(0, 0, _lockRotationAngle * rotationPercentage / 100),
