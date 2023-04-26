@@ -4,16 +4,19 @@ using Kdevaulo.LocksTest.Scripts.Utils;
 
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.UI;
 
 using Object = UnityEngine.Object;
 
 namespace Kdevaulo.LocksTest.Scripts.LockSystem
 {
-    public class LocksController
+    public class LocksController : IDisposable
     {
         private readonly Camera _mainCamera;
 
         private readonly LocksContainer _container;
+
+        private readonly Button _skipButton;
 
         private Randomizer _randomizer;
 
@@ -23,18 +26,30 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
 
         private GameObject[] _lockViewPrefabs;
 
-        public LocksController(LocksContainer container, Camera mainCamera)
+        public LocksController(LocksContainer container, Camera mainCamera, Button skipButton)
         {
             _container = container;
             _mainCamera = mainCamera;
+            _skipButton = skipButton;
+        }
+
+        void IDisposable.Dispose()
+        {
+            _skipButton.onClick.RemoveListener(SkipLock);
         }
 
         public void Initialize(GameObject[] lockViewPrefabs)
         {
             _lockViewPrefabs = lockViewPrefabs;
-
             _randomizer = new Randomizer(0, _lockViewPrefabs.Length);
 
+            _skipButton.onClick.AddListener(SkipLock);
+
+            InitializeNewLock();
+        }
+
+        private void SkipLock()
+        {
             InitializeNewLock();
         }
 
