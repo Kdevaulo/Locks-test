@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 {

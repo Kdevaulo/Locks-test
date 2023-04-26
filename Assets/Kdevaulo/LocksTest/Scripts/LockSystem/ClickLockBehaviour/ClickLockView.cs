@@ -8,7 +8,6 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-using Object = System.Object;
 using Timer = Kdevaulo.LocksTest.Scripts.Utils.Timer;
 
 namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
