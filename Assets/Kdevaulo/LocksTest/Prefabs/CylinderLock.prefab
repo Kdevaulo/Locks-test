@@ -741,7 +741,7 @@ GameObject:
   - component: {fileID: 116083752858404137}
   - component: {fileID: 116083752858404136}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: HintTextCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
