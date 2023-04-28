@@ -2,7 +2,11 @@ using UnityEngine;
 
 namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
 {
-    [AddComponentMenu(nameof(CylinderLockBehaviour) + "/" + nameof(UserInputHandler))]
+    [AddComponentMenu(nameof(CylinderLockBehaviour) +
+                      "/" +
+                      nameof(UserInputHandler) +
+                      " in " +
+                      nameof(CylinderLockBehaviour))]
     public class UserInputHandler : MonoBehaviour
     {
         [SerializeField] private CylinderLockView _lockView;

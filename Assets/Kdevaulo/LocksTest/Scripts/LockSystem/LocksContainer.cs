@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour;
 using Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour;
+using Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour;
 
 using UnityEngine.Assertions;
 
@@ -18,7 +19,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
             {
                 // note: add new lock types here
                 {typeof(ClickLockView), typeof(ClickLock)},
-                {typeof(CylinderLockView), typeof(CylinderLock)}
+                {typeof(CylinderLockView), typeof(CylinderLock)},
+                {typeof(MoveObjectLockView), typeof(MoveObjectLock)}
             };
 
             foreach (var pair in _locksWithViews)
