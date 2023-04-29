@@ -22,7 +22,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
         private readonly Timer _openLockTimer;
 
-        private readonly ClickSoundPlayer _soundPlayer;
+        private readonly ClickLockSoundPlayer _soundPlayer;
 
         private readonly List<PinKit> _pinKits;
 

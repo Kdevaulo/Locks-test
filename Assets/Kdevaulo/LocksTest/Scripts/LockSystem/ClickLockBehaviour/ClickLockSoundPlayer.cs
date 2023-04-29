@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 {
-    [AddComponentMenu(nameof(ClickLockBehaviour) + "/" + nameof(ClickSoundPlayer))]
-    public class ClickSoundPlayer : MonoBehaviour
+    [AddComponentMenu(nameof(ClickLockBehaviour) + "/" + nameof(ClickLockSoundPlayer))]
+    public class ClickLockSoundPlayer : MonoBehaviour
     {
         [SerializeField] private AudioSource _clickAudioSource;
 

@@ -3,7 +3,7 @@ using System.Threading;
 
 using Cysharp.Threading.Tasks;
 
-using DG.Tweening;
+using Kdevaulo.LocksTest.Scripts.Utils;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,7 +27,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
         public Timer OpenTimer => _openTimer;
         public Timer MoveTimer => _moveTimer;
 
-        public ClickSoundPlayer SoundPlayer => _soundPlayer;
+        public ClickLockSoundPlayer SoundPlayer => _soundPlayer;
 
         [SerializeField] private PinKit[] _pinKits;
 
@@ -55,7 +55,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
         [SerializeField] private Canvas _canvas;
 
-        [SerializeField] private ClickSoundPlayer _soundPlayer;
+        [SerializeField] private ClickLockSoundPlayer _soundPlayer;
 
         [SerializeField] private Transform _lockContainer;
 
@@ -97,11 +97,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
             _text.enabled = false;
             _interactionButton.enabled = false;
 
-            await UniTask.Delay(TimeSpan.FromSeconds(_beforeDisappearDelay), cancellationToken: _cts.Token);
-
-            await UniTask.WhenAll(_lockContainer.DORotate(new Vector3(0, 0, -180), 1f).SetEase(Ease.Linear)
-                    .WithCancellation(_cts.Token),
-                _lockContainer.DOScale(Vector3.zero, 1f).SetEase(Ease.Linear).WithCancellation(_cts.Token));
+            await AppearanceTweener.DisappearAsync(_beforeDisappearDelay, _lockContainer, _cts.Token);
         }
 
         public void SetText(string value)
