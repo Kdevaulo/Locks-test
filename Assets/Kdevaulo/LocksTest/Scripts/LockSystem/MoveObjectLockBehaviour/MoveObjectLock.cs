@@ -28,6 +28,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
 
         private readonly MoveObjectLockSoundPlayer _soundPlayer;
 
+        private readonly ResistObjectMover _objectMover;
+
         private bool _canMoveObject;
 
         public MoveObjectLock(MoveObjectLockView lockView)
@@ -44,6 +46,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
             _soundPlayer = lockView.SoundPlayer;
 
             _scaleFiller = new ScaleFiller(_lockView.StartFillPoint, _lockView.EndFillPoint, _lockView.FillStep);
+            _objectMover = new ResistObjectMover(_lockView.ObjectMoverTimer, _lockView.ResistMovingSpeedRange,
+                _lockView.BetweenChangeDirectionSecondsRange, _lockView.Directions);
         }
 
         void ILock.Initialize()
@@ -64,6 +68,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
         void ILock.Dispose()
         {
             UnsubscribeEvents();
+            _objectMover.Dispose();
         }
 
         private void OnItemMoveCalled(Vector2 offset)
@@ -81,7 +86,9 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
 
             var targetPosition = movingContainerPosition + (Vector3) offset * _userMovingSpeed;
 
-            return ClampPositionByCircle(movingContainerPosition, targetPosition);
+            var resistOffset = (Vector3) _objectMover.GetNextPosition();
+
+            return ClampPositionByCircle(movingContainerPosition, targetPosition + resistOffset);
         }
 
         private Vector3 ClampPositionByCircle(Vector3 lastPosition, Vector3 targetPosition)

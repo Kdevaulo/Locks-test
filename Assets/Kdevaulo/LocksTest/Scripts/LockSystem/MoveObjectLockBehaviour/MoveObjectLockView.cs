@@ -20,6 +20,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
         public Vector3 LockContainerPosition => _lockContainer.position;
         public float UserMovingSpeed => _userMovingSpeed;
         public Timer LockLoadTimer => _lockLoadTimer;
+        public Timer ObjectMoverTimer => _objectMoverTimer;
         public float FillStep => _fillStep;
         public float FillTickSeconds => _fillTickSeconds;
         public Vector2 StartFillPoint => _startFillPoint;
@@ -27,6 +28,9 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
         public float CorrectAreaRadius => _correctAreaRadius;
         public float MaxAreaRadius => _maxAreaRadius;
         public MoveObjectLockSoundPlayer SoundPlayer => _soundPlayer;
+        public Vector2 ResistMovingSpeedRange => _resistMovingSpeedRange;
+        public Vector2 BetweenChangeDirectionSecondsRange => _betweenChangeDirectionSecondsRange;
+        public Vector2[] Directions => _directions;
 
         [Header("User settings")]
         [SerializeField] private float _userMovingSpeed = 0.1f;
@@ -49,6 +53,13 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
 
         [SerializeField] private Color _wrongColor = Color.red;
 
+        [Header("Resist moving settings")]
+        [SerializeField] private Vector2 _resistMovingSpeedRange;
+
+        [SerializeField] private Vector2 _betweenChangeDirectionSecondsRange;
+
+        [SerializeField] private Vector2[] _directions;
+
         [Header("Other settings")]
         [SerializeField] private float _beforeDisappearDelay;
 
@@ -70,6 +81,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
         [SerializeField] private Canvas _canvas;
 
         [SerializeField] private Timer _lockLoadTimer;
+
+        [SerializeField] private Timer _objectMoverTimer;
 
         [SerializeField] private MoveObjectLockSoundPlayer _soundPlayer;
 
