@@ -17,46 +17,41 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
     {
         public event Action Clicked = delegate { };
 
+        public ClickLockSoundPlayer SoundPlayer => _soundPlayer;
         public PinKit[] PinKits => _pinKits;
-        public int MaxDefaultDisabledCount => _maxDefaultDisabledCount;
+
         public float MoveLedDelayMultiplier => _moveLedDelayMultiplier;
         public float MinMoveDelay => _minMoveDelay;
+
+        public int MaxDefaultDisabledCount => _maxDefaultDisabledCount;
         public int OpenLockTime => _openLockTime;
+
         public Color ClosedLedColor => _closedLedColor;
         public Color OpenedLedColor => _openedLedColor;
+
         public Timer OpenTimer => _openTimer;
         public Timer MoveTimer => _moveTimer;
-
-        public ClickLockSoundPlayer SoundPlayer => _soundPlayer;
 
         [SerializeField] private PinKit[] _pinKits;
 
         [SerializeField] private int _maxDefaultDisabledCount = 4;
-
-        [SerializeField] private float _moveLedDelayMultiplier = 0.05f;
-
-        [SerializeField] private float _minMoveDelay = 0.05f;
-
         [SerializeField] private int _openLockTime = 25;
 
+        [SerializeField] private float _moveLedDelayMultiplier = 0.05f;
+        [SerializeField] private float _minMoveDelay = 0.05f;
         [SerializeField] private float _beforeDisappearDelay = 0.5f;
 
+        [Header("References")]
         [SerializeField] private Color _closedLedColor;
-
         [SerializeField] private Color _openedLedColor;
 
         [SerializeField] private Timer _openTimer;
-
         [SerializeField] private Timer _moveTimer;
 
         [SerializeField] private Text _text;
-
         [SerializeField] private Button _interactionButton;
-
         [SerializeField] private Canvas _canvas;
-
         [SerializeField] private ClickLockSoundPlayer _soundPlayer;
-
         [SerializeField] private Transform _lockContainer;
 
         private CancellationTokenSource _cts;

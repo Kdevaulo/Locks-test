@@ -39,7 +39,6 @@ namespace Kdevaulo.LocksTest.Scripts.Utils
             if (_index >= _values.Count)
             {
                 Generate();
-                Debug.Log("Unique values run out. Shuffle is done.");
             }
 
             return _values[_index++];

@@ -10,15 +10,12 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
     public class CylinderLockSoundPlayer : MonoBehaviour
     {
         [SerializeField] private AudioSource _rotateAudioSource;
-
         [SerializeField] private AudioSource _openAudioSource;
 
         [SerializeField] private AudioClip _rotateAudioClip;
-
         [SerializeField] private AudioClip _openAudioClip;
 
         private bool _isRotationPlaying;
-
         private bool _isOpenPlaying;
 
         public void PlayRotateSound()

@@ -12,9 +12,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
         public SpriteRenderer Led;
 
         [SerializeField] private Transform _standartPoint;
-
         [SerializeField] private Transform _correctPoint;
-
         [SerializeField] private Transform _pin;
 
         private bool _activated;

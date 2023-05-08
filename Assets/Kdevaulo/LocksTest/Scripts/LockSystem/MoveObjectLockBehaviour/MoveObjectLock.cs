@@ -12,23 +12,17 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
     {
         public event Action LockOpened = delegate { };
 
+        private readonly MoveObjectLockSoundPlayer _soundPlayer;
+        private readonly ResistObjectMover _objectMover;
         private readonly MoveObjectLockView _lockView;
-
-        private readonly float _userMovingSpeed;
-
+        private readonly ScaleFiller _scaleFiller;
         private readonly Timer _lockLoadTimer;
 
-        private readonly ScaleFiller _scaleFiller;
-
+        private readonly float _userMovingSpeed;
         private readonly float _correctAreaDistance;
-
         private readonly float _maxAreaDistance;
 
         private readonly Vector3 _lockPosition;
-
-        private readonly MoveObjectLockSoundPlayer _soundPlayer;
-
-        private readonly ResistObjectMover _objectMover;
 
         private bool _canMoveObject;
 

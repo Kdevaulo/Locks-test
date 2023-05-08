@@ -15,13 +15,10 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
         private const int MaxAngle = 360;
 
         private readonly CylinderLockView _lockView;
-
         private readonly CylinderLockSoundPlayer _soundPlayer;
 
         private readonly float _startAngle;
-
         private readonly float _minMaxRotationOffset;
-
         private readonly float _maxAngleOffset;
 
         private readonly Vector2 _lockOpenRange;
@@ -31,7 +28,6 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
         private int _currentOpenPercentage;
 
         private bool _isLockOpening;
-
         private bool _lockOpened;
 
         public CylinderLock(CylinderLockView lockView)

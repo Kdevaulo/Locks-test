@@ -7,7 +7,6 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
     public class ResistObjectMover
     {
         private readonly Vector2 _speedRange;
-
         private readonly Vector2 _delayRange;
 
         private readonly Vector2[] _directions;

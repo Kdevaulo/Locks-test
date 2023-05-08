@@ -16,36 +16,27 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
     {
         public event Action LockOpened = delegate { };
 
-        private readonly ClickLockView _lockView;
-
         private readonly Timer _moveLedTimer;
-
         private readonly Timer _openLockTimer;
 
+        private readonly ClickLockView _lockView;
         private readonly ClickLockSoundPlayer _soundPlayer;
-
         private readonly List<PinKit> _pinKits;
 
         private readonly Color _closedLedColor;
-
         private readonly Color _openedLedColor;
 
         private readonly float _moveLedDelayMultiplier;
-
         private readonly float _minMoveDelay;
 
         private readonly int _openLockTime;
 
         private PinKit _currentKit;
-
         private PinKit _lastKit;
 
         private int _openLockSecondsCounter;
-
         private int _kitIndex;
-
         private int _maxIndex;
-
         private int _allKitsCount;
 
         private bool _isLeftDirection;

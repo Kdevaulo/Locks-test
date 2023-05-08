@@ -8,7 +8,6 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
         [SerializeField] private AudioSource _audioSource;
 
         [SerializeField] private AudioClip _breakAudioClip;
-
         [SerializeField] private AudioClip _openAudioClip;
 
         public void PlayBreakSound()

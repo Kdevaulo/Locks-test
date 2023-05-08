@@ -13,16 +13,14 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
     public class LocksController : IDisposable
     {
         private readonly Camera _mainCamera;
+        private readonly Button _skipButton;
 
         private readonly LocksContainer _container;
 
-        private readonly Button _skipButton;
+        private ILock _currentLock;
+        private ILockView _currentLockView;
 
         private Randomizer _randomizer;
-
-        private ILock _currentLock;
-
-        private ILockView _currentLockView;
 
         private GameObject[] _lockViewPrefabs;
 

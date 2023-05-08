@@ -6,12 +6,10 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
     public class ClickLockSoundPlayer : MonoBehaviour
     {
         [SerializeField] private AudioSource _clickAudioSource;
-
         [SerializeField] private AudioSource _tickAudioSource;
 
         [Tooltip("Clips count should be == pins count")]
         [SerializeField] private AudioClip[] _clickAudioClips;
-
         [SerializeField] private AudioClip _tickAudioClip;
 
         /// <param name="activationNumber">Activation order number (startPoint == 0)</param>

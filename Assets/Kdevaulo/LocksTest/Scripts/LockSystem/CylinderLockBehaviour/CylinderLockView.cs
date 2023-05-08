@@ -13,27 +13,21 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
     public class CylinderLockView : MonoBehaviour, ILockView
     {
         public event Action<float> Moved = delegate { };
+
         public event Action<bool> OpenLockPressed = delegate { };
+
         public event Action OpenLockStarted = delegate { };
         public event Action OpenLockEnded = delegate { };
         public event Action LockOpened = delegate { };
 
         public CylinderLockSoundPlayer SoundPlayer => _soundPlayer;
+
         public float StartAngle => _startAngle;
         public float MinMaxRotationOffset => _minMaxRotationOffset;
         public float OpenAngleOffset => _openAngleOffset;
         public float MaxAngleOffset => _maxAngleOffset;
+
         public Vector2 LockOpenRange => _lockOpenRange;
-
-        [SerializeField] private CylinderLockSoundPlayer _soundPlayer;
-
-        [SerializeField] private Transform _keyholeRotationContainer;
-
-        [SerializeField] private Transform _toolRotationContainer;
-
-        [SerializeField] private Transform _lockContainer;
-
-        [SerializeField] private Canvas _canvas;
 
         [Header("Lockpick settings")]
         [SerializeField] private float _startAngle = 90f;
@@ -52,11 +46,19 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
 
         [Header("LockCylinderSettings")]
         [SerializeField] private float _lockRotationAngle = -90;
-
         [SerializeField] private float _lockRotationSpeed = 10f;
 
         [Header("Other settings")]
         [SerializeField] private float _beforeDisappearDelay = 0.5f;
+
+        [Header("References")]
+        [SerializeField] private CylinderLockSoundPlayer _soundPlayer;
+
+        [SerializeField] private Transform _keyholeRotationContainer;
+        [SerializeField] private Transform _toolRotationContainer;
+        [SerializeField] private Transform _lockContainer;
+
+        [SerializeField] private Canvas _canvas;
 
         private float _currentRotationProgress = 0f;
 
