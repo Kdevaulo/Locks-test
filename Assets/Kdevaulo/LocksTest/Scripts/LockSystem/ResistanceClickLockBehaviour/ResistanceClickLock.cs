@@ -1,5 +1,7 @@
 using System;
 
+using Cysharp.Threading.Tasks;
+
 using Kdevaulo.LocksTest.Scripts.Utils;
 
 using UnityEngine;
@@ -20,14 +22,15 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ResistanceClickLockBehaviour
         private readonly Vector2 _scaleRotationRange;
 
         private readonly Timer _attackTimer;
-
-        private ResistanceClickLockView _lockView;
+        private readonly ResistanceClickLockView _lockView;
+        private readonly ResistanceClickLockSoundPlayer _soundPlayer;
 
         private float _currentRotation;
 
         public ResistanceClickLock(ResistanceClickLockView lockView)
         {
             _lockView = lockView;
+            _soundPlayer = lockView.SoundPlayer;
 
             _attackTimer = lockView.AttackTimer;
 
@@ -41,28 +44,32 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ResistanceClickLockBehaviour
 
         void ILock.Initialize()
         {
+            _lockView.Clicked += HandlePlayerAttack;
+
             _attackTimer.Elapsed += HandleEnemyAttack;
             _attackTimer.StartTimer(_enemyAttackDelay);
+
+            _soundPlayer.StartPlayBackgroundBattleSound();
         }
 
         void ILock.Dispose()
         {
+            _lockView.Clicked -= HandlePlayerAttack;
+
             _attackTimer.Elapsed -= HandleEnemyAttack;
             _attackTimer.StopTimer();
-        }
-
-        private void HandleEnemyAttack()
-        {
-            _currentRotation += _enemyAttackDamage * EnemyMultiplier;
-
-            RotateScale();
-                // TODO: поворот ускоряется
-            Debug.Log(_currentRotation);
         }
 
         private void HandlePlayerAttack()
         {
             _currentRotation += _userAttackDamage * PlayerMultiplier;
+
+            RotateScale();
+        }
+
+        private void HandleEnemyAttack()
+        {
+            _currentRotation += _enemyAttackDamage * EnemyMultiplier;
 
             RotateScale();
         }
@@ -77,13 +84,38 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ResistanceClickLockBehaviour
         {
             if (_currentRotation <= _scaleRotationRange.x)
             {
-                // loose
+                StopBattle();
+                _lockView.DisableTextCanvas();
+
+                _soundPlayer.PlayWinSound();
+
+                _lockView.DisappearAsync().ContinueWith(LockOpened.Invoke);
             }
 
             if (_currentRotation >= _scaleRotationRange.y)
             {
-                // win
+                StopBattle();
+
+                _soundPlayer.PlayLoseSound();
             }
+        }
+
+        private void StopBattle()
+        {
+            DisableInteractButton();
+            StopTimer();
+
+            _soundPlayer.StopBattleSound();
+        }
+
+        private void DisableInteractButton()
+        {
+            _lockView.DisableInteractButton();
+        }
+
+        private void StopTimer()
+        {
+            _attackTimer.StopTimer();
         }
     }
 }
