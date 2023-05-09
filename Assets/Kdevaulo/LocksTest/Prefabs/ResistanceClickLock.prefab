@@ -436,10 +436,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 2560, y: 1440}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -1003,10 +1003,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 2560, y: 1440}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -1146,7 +1146,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 074d2096eda582646921a859aea8cbd8, type: 3}
-  m_Color: {r: 1, g: 0.49803922, b: 0.3137255, a: 1}
+  m_Color: {r: 0.94509804, g: 0.23529412, b: 0.4509804, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1902,7 +1902,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 074d2096eda582646921a859aea8cbd8, type: 3}
-  m_Color: {r: 0.49803922, g: 1, b: 0, a: 1}
+  m_Color: {r: 0.5568628, g: 0.94509804, b: 0.23529412, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
