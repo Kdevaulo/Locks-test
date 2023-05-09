@@ -56,6 +56,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
             _lockLoadTimer.Elapsed += HandleLoadTimerElapsed;
             _lockLoadTimer.StartTimer(_lockView.FillTickSeconds);
 
+            _soundPlayer.StartPlayLockSound();
+
             _canMoveObject = true;
         }
 
@@ -92,9 +94,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
 
         private void OnScaleFilled()
         {
-            DisableObjectMoving();
-
-            StopTimer();
+            StopLockActivity();
 
             _soundPlayer.PlayOpenSound();
 
@@ -103,11 +103,17 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
 
         private void OnScaleUnFilled()
         {
-            DisableObjectMoving();
-
-            StopTimer();
+            StopLockActivity();
 
             _soundPlayer.PlayBreakSound();
+        }
+
+        private void StopLockActivity()
+        {
+            DisableObjectMoving();
+            StopTimer();
+
+            _soundPlayer.StopLockSound();
         }
 
         private void DisableObjectMoving()
