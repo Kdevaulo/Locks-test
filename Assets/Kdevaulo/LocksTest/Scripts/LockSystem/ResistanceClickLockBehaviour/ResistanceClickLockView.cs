@@ -38,6 +38,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ResistanceClickLockBehaviour
         [Header("References")]
         [SerializeField] private Canvas _textCanvas;
         [SerializeField] private Canvas _interactionCanvas;
+        [SerializeField] private Canvas _hintCanvas;
 
         [SerializeField] private Transform _scaleRotatingItem;
         [SerializeField] private Transform _lockContainer;
@@ -58,6 +59,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ResistanceClickLockBehaviour
         {
             SetCameraToCanvas(targetCamera, _interactionCanvas);
             SetCameraToCanvas(targetCamera, _textCanvas);
+            SetCameraToCanvas(targetCamera, _hintCanvas);
         }
 
         void ILockView.Dispose()

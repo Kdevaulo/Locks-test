@@ -12,8 +12,12 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
 {
     public class LocksController : IDisposable
     {
+        public event Action LockInitialized = delegate { };
+
         private readonly Camera _mainCamera;
+
         private readonly Button _skipButton;
+        private readonly Button _startButton;
 
         private readonly LocksContainer _container;
 
@@ -46,6 +50,11 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
             InitializeNewLock();
         }
 
+        public void StartGame()
+        {
+            _currentLock.Initialize();
+        }
+
         private void SkipLock()
         {
             InitializeNewLock();
@@ -65,7 +74,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
             _currentLockView.SetCamera(_mainCamera);
 
             _currentLock.LockOpened += InitializeNewLock;
-            _currentLock.Initialize();
+
+            LockInitialized.Invoke();
         }
 
         private void DestroyCurrentLock()

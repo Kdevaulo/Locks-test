@@ -45,9 +45,11 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
         [SerializeField] private Timer _openTimer;
         [SerializeField] private Timer _moveTimer;
 
+        [SerializeField] private Canvas _interactCanvas;
+        [SerializeField] private Canvas _hintCanvas;
+
         [SerializeField] private Text _text;
         [SerializeField] private Button _interactionButton;
-        [SerializeField] private Canvas _canvas;
         [SerializeField] private Transform _lockContainer;
 
         [SerializeField] private ClickLockSoundPlayer _soundPlayer;
@@ -61,7 +63,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
         void ILockView.SetCamera(Camera targetCamera)
         {
-            SetCameraToCanvas(targetCamera, _canvas);
+            SetCameraToCanvas(targetCamera, _interactCanvas);
+            SetCameraToCanvas(targetCamera, _hintCanvas);
         }
 
         void ILockView.Dispose()

@@ -72,7 +72,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
         [SerializeField] private Timer _lockLoadTimer;
         [SerializeField] private Timer _objectMoverTimer;
 
-        [SerializeField] private Canvas _canvas;
+        [SerializeField] private Canvas _hintCanvas;
 
         [SerializeField] private SpritesData _spritesData;
         [SerializeField] private MoveObjectLockSoundPlayer _soundPlayer;
@@ -90,7 +90,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
 
         void ILockView.SetCamera(Camera targetCamera)
         {
-            SetCameraToCanvas(targetCamera, _canvas);
+            SetCameraToCanvas(targetCamera, _hintCanvas);
         }
 
         void ILockView.Dispose()
