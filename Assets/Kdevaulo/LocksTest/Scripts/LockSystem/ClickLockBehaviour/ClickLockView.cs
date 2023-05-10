@@ -48,8 +48,9 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
         [SerializeField] private Text _text;
         [SerializeField] private Button _interactionButton;
         [SerializeField] private Canvas _canvas;
-        [SerializeField] private ClickLockSoundPlayer _soundPlayer;
         [SerializeField] private Transform _lockContainer;
+
+        [SerializeField] private ClickLockSoundPlayer _soundPlayer;
 
         private void Awake()
         {

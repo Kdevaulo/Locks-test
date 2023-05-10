@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Kdevaulo.LocksTest.Scripts.LockSystem
 {
-    public class AbstractLockView : MonoBehaviour
+    public abstract class AbstractLockView : MonoBehaviour
     {
         protected CancellationTokenSource cts;
 
