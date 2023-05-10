@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 
 using Cysharp.Threading.Tasks;
 
@@ -8,12 +7,10 @@ using Kdevaulo.LocksTest.Scripts.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-using Timer = Kdevaulo.LocksTest.Scripts.Utils.Timer;
-
 namespace Kdevaulo.LocksTest.Scripts.LockSystem.ResistanceClickLockBehaviour
 {
     [AddComponentMenu(nameof(ResistanceClickLockBehaviour) + "/" + nameof(ResistanceClickLockView))]
-    public class ResistanceClickLockView : MonoBehaviour, ILockView
+    public class ResistanceClickLockView : AbstractLockView, ILockView
     {
         public event Action Clicked = delegate { };
 
@@ -50,47 +47,36 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ResistanceClickLockBehaviour
         [SerializeField] private Timer _attackTimer;
         [SerializeField] private ResistanceClickLockSoundPlayer _soundPlayer;
 
-        private CancellationTokenSource _cts;
-
         private void Awake()
         {
             _interactionButton.onClick.AddListener(HandleButtonClick);
 
-            _cts = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
+            InitializeToken();
         }
 
         void ILockView.SetCamera(Camera targetCamera)
         {
-            _interactionCanvas.renderMode = RenderMode.ScreenSpaceCamera;
-            _interactionCanvas.worldCamera = targetCamera;
-
-            _textCanvas.renderMode = RenderMode.ScreenSpaceCamera;
-            _textCanvas.worldCamera = targetCamera;
+            SetCameraToCanvas(targetCamera, _interactionCanvas);
+            SetCameraToCanvas(targetCamera, _textCanvas);
         }
 
         void ILockView.Dispose()
         {
             _interactionButton.onClick.RemoveListener(HandleButtonClick);
 
-            if (_cts != null && !_cts.IsCancellationRequested)
-            {
-                _cts.Cancel();
-                _cts.Dispose();
-                _cts = null;
-            }
+            TryCancelToken();
         }
 
         void ILockView.DestroyGameObject()
         {
-            gameObject.SetActive(false);
-            Destroy(gameObject);
+            DestroyGameObject();
         }
 
         public async UniTask DisappearAsync()
         {
             _interactionButton.enabled = false;
 
-            await AppearanceTweener.DisappearAsync(_beforeDisappearDelay, _lockContainer, _cts.Token);
+            await AppearanceTweener.DisappearAsync(_beforeDisappearDelay, _lockContainer, cts.Token);
         }
 
         public void SetRotation(float targetZRotation)

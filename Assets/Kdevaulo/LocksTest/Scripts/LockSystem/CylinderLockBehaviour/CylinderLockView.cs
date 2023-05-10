@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 
 using Cysharp.Threading.Tasks;
 
@@ -10,7 +9,7 @@ using UnityEngine;
 namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
 {
     [AddComponentMenu(nameof(CylinderLockBehaviour) + "/" + nameof(CylinderLockView))]
-    public class CylinderLockView : MonoBehaviour, ILockView
+    public class CylinderLockView : AbstractLockView, ILockView
     {
         public event Action<float> Moved = delegate { };
 
@@ -62,38 +61,29 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
 
         private float _currentRotationProgress = 0f;
 
-        private CancellationTokenSource _cts;
-
         private void Awake()
         {
-            _cts = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
+            InitializeToken();
         }
 
         void ILockView.SetCamera(Camera targetCamera)
         {
-            _canvas.renderMode = RenderMode.ScreenSpaceCamera;
-            _canvas.worldCamera = targetCamera;
+            SetCameraToCanvas(targetCamera, _canvas);
         }
 
         void ILockView.Dispose()
         {
-            if (_cts != null && !_cts.IsCancellationRequested)
-            {
-                _cts.Cancel();
-                _cts.Dispose();
-                _cts = null;
-            }
+            TryCancelToken();
         }
 
         void ILockView.DestroyGameObject()
         {
-            gameObject.SetActive(false);
-            Destroy(gameObject);
+            DestroyGameObject();
         }
 
         public async UniTask DisappearAsync()
         {
-            await AppearanceTweener.DisappearAsync(_beforeDisappearDelay, _lockContainer, _cts.Token);
+            await AppearanceTweener.DisappearAsync(_beforeDisappearDelay, _lockContainer, cts.Token);
         }
 
         public void MoveLockPick(float value)

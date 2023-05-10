@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 
 using Cysharp.Threading.Tasks;
 
@@ -7,12 +6,10 @@ using Kdevaulo.LocksTest.Scripts.Utils;
 
 using UnityEngine;
 
-using Timer = Kdevaulo.LocksTest.Scripts.Utils.Timer;
-
 namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
 {
     [AddComponentMenu(nameof(MoveObjectLockBehaviour) + "/" + nameof(MoveObjectLockView))]
-    public class MoveObjectLockView : MonoBehaviour, ILockView
+    public class MoveObjectLockView : AbstractLockView, ILockView
     {
         public event Action<Vector2> ItemMoveCalled = delegate { };
 
@@ -80,11 +77,9 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
         [SerializeField] private SpritesData _spritesData;
         [SerializeField] private MoveObjectLockSoundPlayer _soundPlayer;
 
-        private CancellationTokenSource _cts;
-
         private void Awake()
         {
-            _cts = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
+            InitializeToken();
         }
 
         private void OnDrawGizmos()
@@ -95,29 +90,22 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
 
         void ILockView.SetCamera(Camera targetCamera)
         {
-            _canvas.renderMode = RenderMode.ScreenSpaceCamera;
-            _canvas.worldCamera = targetCamera;
+            SetCameraToCanvas(targetCamera, _canvas);
         }
 
         void ILockView.Dispose()
         {
-            if (_cts != null && !_cts.IsCancellationRequested)
-            {
-                _cts.Cancel();
-                _cts.Dispose();
-                _cts = null;
-            }
+            TryCancelToken();
         }
 
         void ILockView.DestroyGameObject()
         {
-            gameObject.SetActive(false);
-            Destroy(gameObject);
+            DestroyGameObject();
         }
 
         public async UniTask DisappearAsync()
         {
-            await AppearanceTweener.DisappearAsync(_beforeDisappearDelay, _lockContainer, _cts.Token);
+            await AppearanceTweener.DisappearAsync(_beforeDisappearDelay, _lockContainer, cts.Token);
         }
 
         public void MoveItem(Vector2 offset)
