@@ -5,6 +5,7 @@ using Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour;
 using Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour;
 using Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour;
 using Kdevaulo.LocksTest.Scripts.LockSystem.ResistanceClickLockBehaviour;
+using Kdevaulo.LocksTest.Scripts.LockSystem.RotateImageLockBehaviour;
 
 using UnityEngine.Assertions;
 
@@ -22,7 +23,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
                 {typeof(ClickLockView), typeof(ClickLock)},
                 {typeof(CylinderLockView), typeof(CylinderLock)},
                 {typeof(MoveObjectLockView), typeof(MoveObjectLock)},
-                {typeof(ResistanceClickLockView), typeof(ResistanceClickLock)}
+                {typeof(ResistanceClickLockView), typeof(ResistanceClickLock)},
+                {typeof(RotateImageLockView), typeof(RotateImageLock)}
             };
 
             foreach (var pair in _locksWithViews)
