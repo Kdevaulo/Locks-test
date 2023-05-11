@@ -66,7 +66,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
             InitializeToken();
         }
 
-        void ILockView.SetCamera(Camera targetCamera)
+        void ICameraGetter.SetCamera(Camera targetCamera)
         {
             SetCameraToCanvas(targetCamera, _canvas);
         }

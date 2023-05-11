@@ -1,10 +1,7 @@
-using UnityEngine;
-
 namespace Kdevaulo.LocksTest.Scripts
 {
-    public interface ILockView
+    public interface ILockView : ICameraGetter
     {
-        void SetCamera(Camera targetCamera);
         void Dispose();
         void DestroyGameObject();
     }

@@ -88,7 +88,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
             Gizmos.DrawWireSphere(_lockContainer.position, CorrectAreaRadius);
         }
 
-        void ILockView.SetCamera(Camera targetCamera)
+        void ICameraGetter.SetCamera(Camera targetCamera)
         {
             SetCameraToCanvas(targetCamera, _hintCanvas);
         }

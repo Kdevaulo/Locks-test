@@ -55,7 +55,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ResistanceClickLockBehaviour
             InitializeToken();
         }
 
-        void ILockView.SetCamera(Camera targetCamera)
+        void ICameraGetter.SetCamera(Camera targetCamera)
         {
             SetCameraToCanvas(targetCamera, _interactionCanvas);
             SetCameraToCanvas(targetCamera, _textCanvas);
