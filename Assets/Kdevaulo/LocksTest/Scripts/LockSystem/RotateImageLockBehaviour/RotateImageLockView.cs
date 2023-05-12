@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Cysharp.Threading.Tasks;
 
@@ -16,14 +17,28 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.RotateImageLockBehaviour
 
         public ImageRing[] ImageRingCollection => _imageRingContainer.ImageRingCollection;
 
+        public Timer CheckTimer => _checkTimer;
+        public RotateImageLockSoundPlayer SoundPlayer => _soundPlayer;
+
+        [Header("Correct behaviour settings")]
+        [SerializeField] private float _maxDegreeDifference = 4f;
+
+        [Header("Other settings")]
+        [SerializeField] private float _beforeDisappearDelay = 2f;
+
         [Header("References")]
         [SerializeField] private Sprite[] _lockSprites;
 
-        [SerializeField] private Canvas _hintCanvas;
-
-        [SerializeField] private ImageRingContainer _imageRingContainer;
-
         [SerializeField] private SpriteRenderer _staticRenderer;
+        [SerializeField] private SpriteRenderer _correctImageRenderer;
+
+        [SerializeField] private Canvas _hintCanvas;
+        [SerializeField] private GameObject _correctImageGameObject;
+        [SerializeField] private Transform _lockContainer;
+
+        [SerializeField] private RotateImageLockSoundPlayer _soundPlayer;
+        [SerializeField] private ImageRingContainer _imageRingContainer;
+        [SerializeField] private Timer _checkTimer;
 
         private Camera _targetCamera;
 
@@ -58,9 +73,33 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.RotateImageLockBehaviour
             await UniTask.WhenAll(tasks);
         }
 
+        public async UniTask DisappearAsync()
+        {
+            await AppearanceTweener.DisappearAsync(_beforeDisappearDelay, _lockContainer, cts.Token);
+        }
+
         public Camera GetCamera()
         {
             return _targetCamera;
+        }
+
+        public bool CheckIfRingsAtStartPosition()
+        {
+            var result = _imageRingContainer.ImageRingCollection.All(x =>
+            {
+                var zRotation = x.Transform.localRotation.eulerAngles.z;
+
+                return zRotation <= _maxDegreeDifference && zRotation >= 0 ||
+                       zRotation >= RotateImageLockConstants.MaxAngle - _maxDegreeDifference &&
+                       zRotation <= RotateImageLockConstants.MaxAngle;
+            });
+
+            return result;
+        }
+
+        public void EnableCorrectImage()
+        {
+            _correctImageGameObject.SetActive(true);
         }
 
         public void SetSpriteToRings(Sprite sprite)
@@ -68,6 +107,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.RotateImageLockBehaviour
             ForEachInImageRingCollection(x => x.Renderer.sprite = sprite);
 
             _staticRenderer.sprite = sprite;
+            _correctImageRenderer.sprite = sprite;
         }
 
         public void EnableColliders()

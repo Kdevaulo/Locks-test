@@ -44,6 +44,9 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
 
         private void OnDestroy()
         {
+            _pressToOpenScreenController.StartPressed -= HandleStartPressed;
+            _locksController.LockInitialized -= HandleLockInitialized;
+
             foreach (var disposable in _disposables)
             {
                 disposable.Dispose();

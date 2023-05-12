@@ -15,10 +15,17 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.RotateImageLockBehaviour
         private Vector2 _screenPosition;
         private Vector2 _currentOffset;
 
+        private bool _canRotate = true;
+
         public TransformRotator(Transform targetTransform, Camera targetCamera)
         {
             _targetTransform = targetTransform;
             _currentCamera = targetCamera;
+        }
+
+        public void DisableRotation()
+        {
+            _canRotate = false;
         }
 
         public void HandlePointerDown()
@@ -32,6 +39,9 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.RotateImageLockBehaviour
 
         public void HandlePointerDrag()
         {
+            if (!_canRotate)
+                return;
+
             CalculateOffset();
 
             Quaternion targetRotation = GetRotation(_currentOffset);
