@@ -1411,6 +1411,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 519c292712ac43d6805cae6f7d9e2f5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beforeDisappearDelay: 0.5
+  hintCanvas: {fileID: 3523758879606549700}
+  lockContainer: {fileID: 4475426997361082351}
   _pinKits:
   - Led: {fileID: 2402506602153869906}
     _standartPoint: {fileID: 7260226490862431312}
@@ -1448,16 +1451,13 @@ MonoBehaviour:
   _openLockTime: 25
   _moveLedDelayMultiplier: 0.05
   _minMoveDelay: 0.03
-  _beforeDisappearDelay: 0.5
   _closedLedColor: {r: 0.89411765, g: 0, b: 0.27058825, a: 1}
   _openedLedColor: {r: 0.40392157, g: 0.8901961, b: 0, a: 1}
   _openTimer: {fileID: 6158784242773708659}
   _moveTimer: {fileID: 560377453790754410}
   _interactCanvas: {fileID: 792801815245511055}
-  _hintCanvas: {fileID: 3523758879606549700}
   _text: {fileID: 542295367782057161}
   _interactionButton: {fileID: 390349696070595764}
-  _lockContainer: {fileID: 4475426997361082351}
   _soundPlayer: {fileID: 5013758980998707737}
 --- !u!1 &4286644206735074618
 GameObject:

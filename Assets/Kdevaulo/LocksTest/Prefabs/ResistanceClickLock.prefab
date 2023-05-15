@@ -49,16 +49,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 034a81bc16044d59a651874ae3992f35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beforeDisappearDelay: 0.5
+  hintCanvas: {fileID: 6656440320268146149}
+  lockContainer: {fileID: 658293804747634874}
   _enemyAttackDelay: 0.05
   _enemyAttackDamage: 1
   _userAttackDamage: 6
   _scaleRotationRange: {x: -50, y: 50}
-  _beforeDisappearDelay: 0.2
   _textCanvas: {fileID: 3328799513769565317}
   _interactionCanvas: {fileID: 5209261322892571182}
-  _hintCanvas: {fileID: 6656440320268146149}
   _scaleRotatingItem: {fileID: 2958628357250686183}
-  _lockContainer: {fileID: 658293804747634874}
   _interactionButton: {fileID: 7745350860572584691}
   _attackTimer: {fileID: 4857856595072764613}
   _soundPlayer: {fileID: 5897795592862512451}

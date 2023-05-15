@@ -129,6 +129,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5cb84554fc460a906bb4bb3c03eed0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beforeDisappearDelay: 0.5
+  hintCanvas: {fileID: 116083752858404138}
+  lockContainer: {fileID: 116083753062565023}
   _startAngle: 90
   _minMaxRotationOffset: 160
   _openAngleOffset: 20
@@ -136,12 +139,9 @@ MonoBehaviour:
   _lockOpenRange: {x: -20, y: 200}
   _lockRotationAngle: -90
   _lockRotationSpeed: 3
-  _beforeDisappearDelay: 0.5
   _soundPlayer: {fileID: 7080035937677753965}
   _keyholeRotationContainer: {fileID: 116083752446474309}
   _toolRotationContainer: {fileID: 116083753033810643}
-  _lockContainer: {fileID: 116083753062565023}
-  _canvas: {fileID: 116083752858404138}
 --- !u!1 &116083751805663002
 GameObject:
   m_ObjectHideFlags: 0

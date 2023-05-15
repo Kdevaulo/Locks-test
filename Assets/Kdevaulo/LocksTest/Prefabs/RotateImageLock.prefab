@@ -606,8 +606,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf33340433b4017bb4b8b371294503c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beforeDisappearDelay: 2
+  hintCanvas: {fileID: 608207336963535609}
+  lockContainer: {fileID: 608207337495072176}
   _maxDegreeDifference: 4
-  _beforeDisappearDelay: 2
   _lockSprites:
   - {fileID: 21300000, guid: 7332bfeae325f3c49ade020904e42f1f, type: 3}
   - {fileID: 21300000, guid: 4b6c612ba76e40149bb2ae9825e92085, type: 3}
@@ -616,9 +618,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: ce4ada7577a32a7439c80da905ed6a05, type: 3}
   _staticRenderer: {fileID: 9169359046541099651}
   _correctImageRenderer: {fileID: 854935077707193691}
-  _hintCanvas: {fileID: 608207336963535609}
   _correctImageGameObject: {fileID: 5408956139606360493}
-  _lockContainer: {fileID: 608207337495072176}
   _soundPlayer: {fileID: 1348906163824591662}
   _imageRingContainer:
     _imageRingCollection:

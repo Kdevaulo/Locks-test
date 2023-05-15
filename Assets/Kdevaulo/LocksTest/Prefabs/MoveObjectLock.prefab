@@ -212,6 +212,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a26b96a38041432cb53fa197db539bf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beforeDisappearDelay: 0.5
+  hintCanvas: {fileID: 1683888140270343059}
+  lockContainer: {fileID: 5868672921022747053}
   _userMovingSpeed: 0.05
   _fillStep: 0.0125
   _fillTickSeconds: 0.05
@@ -232,16 +235,13 @@ MonoBehaviour:
   - {x: 1, y: -1}
   - {x: -1, y: -1}
   - {x: 0, y: -1}
-  _beforeDisappearDelay: 0.5
   _shadowRenderer: {fileID: 4975902611462217477}
   _movingObjectRenderer: {fileID: 88063932777330960}
   _fillerRenderer: {fileID: 5488053844177653235}
   _movingObjectContainer: {fileID: 913884067328494220}
   _movingFillerContainer: {fileID: 6704046302424618967}
-  _lockContainer: {fileID: 5868672921022747053}
   _lockLoadTimer: {fileID: 400246178986418878}
   _objectMoverTimer: {fileID: 731110649804586199}
-  _hintCanvas: {fileID: 1683888140270343059}
   _spritesData: {fileID: 11400000, guid: 03824342e5d29f347a890bdf52ea17a1, type: 2}
   _soundPlayer: {fileID: 1555810265956767982}
 --- !u!1 &1494547217176847654
