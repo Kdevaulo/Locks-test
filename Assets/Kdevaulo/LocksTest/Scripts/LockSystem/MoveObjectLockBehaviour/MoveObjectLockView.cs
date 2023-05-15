@@ -14,7 +14,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
         public event Action<Vector2> ItemMoveCalled = delegate { };
 
         public Vector3 MovingContainerPosition => _movingObjectContainer.position;
-        public Vector3 LockContainerPosition => _lockContainer.position;
+        public Vector3 LockContainerPosition => lockContainer.position;
 
         public Vector2 StartFillPoint => _startFillPoint;
         public Vector2 EndFillPoint => _endFillPoint;
@@ -57,9 +57,6 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
 
         [SerializeField] private Vector2[] _directions;
 
-        [Header("Other settings")]
-        [SerializeField] private float _beforeDisappearDelay;
-
         [Header("References")]
         [SerializeField] private SpriteRenderer _shadowRenderer;
         [SerializeField] private SpriteRenderer _movingObjectRenderer;
@@ -67,12 +64,9 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
 
         [SerializeField] private Transform _movingObjectContainer;
         [SerializeField] private Transform _movingFillerContainer;
-        [SerializeField] private Transform _lockContainer;
 
         [SerializeField] private Timer _lockLoadTimer;
         [SerializeField] private Timer _objectMoverTimer;
-
-        [SerializeField] private Canvas _hintCanvas;
 
         [SerializeField] private SpritesData _spritesData;
         [SerializeField] private MoveObjectLockSoundPlayer _soundPlayer;
@@ -85,12 +79,12 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(_lockContainer.position, CorrectAreaRadius);
+            Gizmos.DrawWireSphere(lockContainer.position, CorrectAreaRadius);
         }
 
         void ICameraGetter.SetCamera(Camera targetCamera)
         {
-            SetCameraToCanvas(targetCamera, _hintCanvas);
+            SetCameraToCanvas(targetCamera, hintCanvas);
         }
 
         void ILockView.Dispose()
@@ -105,7 +99,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
 
         public async UniTask DisappearAsync()
         {
-            await AppearanceTweener.DisappearAsync(_beforeDisappearDelay, _lockContainer, cts.Token);
+            await AppearanceTweener.DisappearAsync(beforeDisappearDelay, lockContainer, cts.Token);
         }
 
         public void MoveItem(Vector2 offset)

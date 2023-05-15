@@ -8,6 +8,14 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
 {
     public abstract class AbstractLockView : MonoBehaviour
     {
+        [Header("Common settings")]
+        [SerializeField] protected float beforeDisappearDelay = 0.5f;
+
+        [Header("Common references")]
+        [SerializeField] protected Canvas hintCanvas;
+
+        [SerializeField] protected Transform lockContainer;
+
         protected CancellationTokenSource cts;
 
         protected void InitializeToken()

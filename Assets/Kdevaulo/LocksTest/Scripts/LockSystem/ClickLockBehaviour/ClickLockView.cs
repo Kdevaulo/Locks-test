@@ -36,7 +36,6 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
 
         [SerializeField] private float _moveLedDelayMultiplier = 0.05f;
         [SerializeField] private float _minMoveDelay = 0.05f;
-        [SerializeField] private float _beforeDisappearDelay = 0.5f;
 
         [Header("References")]
         [SerializeField] private Color _closedLedColor;
@@ -46,11 +45,9 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
         [SerializeField] private Timer _moveTimer;
 
         [SerializeField] private Canvas _interactCanvas;
-        [SerializeField] private Canvas _hintCanvas;
 
         [SerializeField] private Text _text;
         [SerializeField] private Button _interactionButton;
-        [SerializeField] private Transform _lockContainer;
 
         [SerializeField] private ClickLockSoundPlayer _soundPlayer;
 
@@ -64,7 +61,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
         void ICameraGetter.SetCamera(Camera targetCamera)
         {
             SetCameraToCanvas(targetCamera, _interactCanvas);
-            SetCameraToCanvas(targetCamera, _hintCanvas);
+            SetCameraToCanvas(targetCamera, hintCanvas);
         }
 
         void ILockView.Dispose()
@@ -84,7 +81,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
             _text.enabled = false;
             _interactionButton.enabled = false;
 
-            await AppearanceTweener.DisappearAsync(_beforeDisappearDelay, _lockContainer, cts.Token);
+            await AppearanceTweener.DisappearAsync(beforeDisappearDelay, lockContainer, cts.Token);
         }
 
         public void SetText(string value)

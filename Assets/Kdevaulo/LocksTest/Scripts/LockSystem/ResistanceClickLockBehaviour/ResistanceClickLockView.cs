@@ -33,15 +33,11 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ResistanceClickLockBehaviour
         [Header("Other Settings")]
         [SerializeField] private Vector2 _scaleRotationRange;
 
-        [SerializeField] private float _beforeDisappearDelay = 0.5f;
-
         [Header("References")]
         [SerializeField] private Canvas _textCanvas;
         [SerializeField] private Canvas _interactionCanvas;
-        [SerializeField] private Canvas _hintCanvas;
 
         [SerializeField] private Transform _scaleRotatingItem;
-        [SerializeField] private Transform _lockContainer;
 
         [SerializeField] private Button _interactionButton;
 
@@ -59,7 +55,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ResistanceClickLockBehaviour
         {
             SetCameraToCanvas(targetCamera, _interactionCanvas);
             SetCameraToCanvas(targetCamera, _textCanvas);
-            SetCameraToCanvas(targetCamera, _hintCanvas);
+            SetCameraToCanvas(targetCamera, hintCanvas);
         }
 
         void ILockView.Dispose()
@@ -78,7 +74,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ResistanceClickLockBehaviour
         {
             _interactionButton.enabled = false;
 
-            await AppearanceTweener.DisappearAsync(_beforeDisappearDelay, _lockContainer, cts.Token);
+            await AppearanceTweener.DisappearAsync(beforeDisappearDelay, lockContainer, cts.Token);
         }
 
         public void SetRotation(float targetZRotation)

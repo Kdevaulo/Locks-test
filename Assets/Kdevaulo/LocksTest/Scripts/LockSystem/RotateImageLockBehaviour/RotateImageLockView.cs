@@ -23,18 +23,13 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.RotateImageLockBehaviour
         [Header("Correct behaviour settings")]
         [SerializeField] private float _maxDegreeDifference = 4f;
 
-        [Header("Other settings")]
-        [SerializeField] private float _beforeDisappearDelay = 2f;
-
         [Header("References")]
         [SerializeField] private Sprite[] _lockSprites;
 
         [SerializeField] private SpriteRenderer _staticRenderer;
         [SerializeField] private SpriteRenderer _correctImageRenderer;
 
-        [SerializeField] private Canvas _hintCanvas;
         [SerializeField] private GameObject _correctImageGameObject;
-        [SerializeField] private Transform _lockContainer;
 
         [SerializeField] private RotateImageLockSoundPlayer _soundPlayer;
         [SerializeField] private ImageRingContainer _imageRingContainer;
@@ -51,7 +46,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.RotateImageLockBehaviour
         {
             _targetCamera = targetCamera;
 
-            SetCameraToCanvas(targetCamera, _hintCanvas);
+            SetCameraToCanvas(targetCamera, hintCanvas);
         }
 
         void ILockView.Dispose()
@@ -75,7 +70,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.RotateImageLockBehaviour
 
         public async UniTask DisappearAsync()
         {
-            await AppearanceTweener.DisappearAsync(_beforeDisappearDelay, _lockContainer, cts.Token);
+            await AppearanceTweener.DisappearAsync(beforeDisappearDelay, lockContainer, cts.Token);
         }
 
         public Camera GetCamera()

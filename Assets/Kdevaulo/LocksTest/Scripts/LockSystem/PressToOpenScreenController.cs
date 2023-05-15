@@ -29,7 +29,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
         {
             _screenCanvas.gameObject.SetActive(true);
         }
-        
+
         private void HandleStartButtonClick()
         {
             _screenCanvas.gameObject.SetActive(false);

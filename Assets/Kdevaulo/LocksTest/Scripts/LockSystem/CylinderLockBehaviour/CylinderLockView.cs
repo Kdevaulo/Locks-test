@@ -47,17 +47,11 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
         [SerializeField] private float _lockRotationAngle = -90;
         [SerializeField] private float _lockRotationSpeed = 10f;
 
-        [Header("Other settings")]
-        [SerializeField] private float _beforeDisappearDelay = 0.5f;
-
         [Header("References")]
         [SerializeField] private CylinderLockSoundPlayer _soundPlayer;
 
         [SerializeField] private Transform _keyholeRotationContainer;
         [SerializeField] private Transform _toolRotationContainer;
-        [SerializeField] private Transform _lockContainer;
-
-        [SerializeField] private Canvas _canvas;
 
         private float _currentRotationProgress = 0f;
 
@@ -68,7 +62,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
 
         void ICameraGetter.SetCamera(Camera targetCamera)
         {
-            SetCameraToCanvas(targetCamera, _canvas);
+            SetCameraToCanvas(targetCamera, hintCanvas);
         }
 
         void ILockView.Dispose()
@@ -83,7 +77,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
 
         public async UniTask DisappearAsync()
         {
-            await AppearanceTweener.DisappearAsync(_beforeDisappearDelay, _lockContainer, cts.Token);
+            await AppearanceTweener.DisappearAsync(beforeDisappearDelay, lockContainer, cts.Token);
         }
 
         public void MoveLockPick(float value)
