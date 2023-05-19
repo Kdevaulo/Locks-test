@@ -16,7 +16,7 @@ namespace Kdevaulo.LocksTest.Scripts.Utils
         /// <summary>
         /// Rotates transform with random duration (1-2s) and to random angle (0-360)
         /// </summary>
-        public static async UniTask DoRandomRotate(Transform transform)
+        public static async UniTask DoRandomRotateAsync(Transform transform)
         {
             var randomZAngle = Random.Range(0f, MaxAngle);
             var duration = Random.Range(MinDuration, MaxDuration);

@@ -49,7 +49,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.RotateImageLockBehaviour
 
             _checkTimer.Elapsed += CheckIfLockOpened;
 
-            _lockView.RotateRingsAtRandomAngles().ContinueWith(StartGame);
+            _lockView.RotateRingsAtRandomAnglesAsync().ContinueWith(StartGame);
 
             _soundPlayer.PlayStartRotationSound();
         }

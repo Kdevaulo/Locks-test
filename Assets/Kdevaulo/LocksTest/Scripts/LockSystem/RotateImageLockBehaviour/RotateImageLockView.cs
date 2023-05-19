@@ -59,11 +59,11 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.RotateImageLockBehaviour
             DestroyGameObject();
         }
 
-        public async UniTask RotateRingsAtRandomAngles()
+        public async UniTask RotateRingsAtRandomAnglesAsync()
         {
             var tasks = new List<UniTask>(3);
 
-            ForEachInImageRingCollection(x => tasks.Add(RandomTransformZRotator.DoRandomRotate(x.Transform)));
+            ForEachInImageRingCollection(x => tasks.Add(RandomTransformZRotator.DoRandomRotateAsync(x.Transform)));
 
             await UniTask.WhenAll(tasks);
         }
