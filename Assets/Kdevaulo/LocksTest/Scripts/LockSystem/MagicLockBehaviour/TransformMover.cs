@@ -12,6 +12,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
     {
         private readonly float _smoothness;
 
+        private readonly Rigidbody2D _rigidbody;
         private readonly Transform _targetTransform;
 
         private readonly PointTransmitter _transmitter;
@@ -22,10 +23,10 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
 
         private bool _isDragging;
 
-        public TransformMover(float smoothness, Transform targetTransform, PointTransmitter transmitter)
+        public TransformMover(float smoothness, Rigidbody2D rigidbody, PointTransmitter transmitter)
         {
             _smoothness = smoothness;
-            _targetTransform = targetTransform;
+            _rigidbody = rigidbody;
             _transmitter = transmitter;
         }
 
@@ -51,17 +52,17 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
 
             ChangeTargetPosition(vector);
 
-            CancelToken();
+            TryCancelToken();
         }
 
         private async UniTask MoveAsync(CancellationToken token)
         {
             while (_isDragging)
             {
-                _targetTransform.position = Vector3.Lerp(_targetTransform.position, _targetPosition,
-                    _smoothness * Time.deltaTime);
+                _rigidbody.MovePosition(Vector3.Lerp(_rigidbody.position, _targetPosition,
+                    _smoothness * Time.deltaTime));
 
-                await UniTask.Yield(token);
+                await UniTask.WaitForFixedUpdate(token);
             }
         }
 
@@ -70,7 +71,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
             _targetPosition = _transmitter.TransmitPoint(vector);
         }
 
-        private void CancelToken()
+        private void TryCancelToken()
         {
             if (_cts != null && !_cts.IsCancellationRequested)
             {

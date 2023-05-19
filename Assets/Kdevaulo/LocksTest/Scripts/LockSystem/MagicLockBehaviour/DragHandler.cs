@@ -16,12 +16,10 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
         public event Action<Vector2> OnDragBegin = delegate { };
         public event Action<Vector2> OnDragEnd = delegate { };
 
-        public Transform ContainerTransform => _containerTransform;
+        public Rigidbody2D Rigidbody => _rigidbody;
 
         [Header("References")]
-        [SerializeField] private Transform _containerTransform;
-
-        [SerializeField] private Collider2D _collider;
+        [SerializeField] private Rigidbody2D _rigidbody;
 
         private PointerEventData _currentEventData;
 
@@ -29,8 +27,6 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
 
         void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
         {
-            _collider.enabled = false;
-
             _currentEventData = eventData;
 
             OnDragBegin.Invoke(eventData.position);
@@ -46,8 +42,6 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
 
         void IEndDragHandler.OnEndDrag(PointerEventData eventData)
         {
-            _collider.enabled = true;
-
             _currentEventData = null;
 
             OnDragEnd.Invoke(eventData.position);

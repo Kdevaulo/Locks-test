@@ -1,3 +1,7 @@
+using Cysharp.Threading.Tasks;
+
+using Kdevaulo.LocksTest.Scripts.Utils;
+
 using UnityEngine;
 
 namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
@@ -9,13 +13,28 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
         public DragHandler InnerLightDragHandler => _innerLightDragHandler;
 
         public float DragSmoothness => _dragSmoothness;
+        public float MaxDegreeOffset => _maxDegreeOffset;
+        public float HoldLightSeconds => _holdLightSeconds;
+        public float RotationSpeed => _rotationSpeed;
+
+        public Transform OuterRingContainer => _outerRingContainer;
+        public Transform InnerRingContainer => _innerRingContainer;
+        public Transform OuterWheel => _outerWheel;
+        public Transform InnerWheel => _innerWheel;
 
         [Header("Drag settings")]
-        [SerializeField] private float _dragSmoothness = 0.5f;
+        [SerializeField] private float _dragSmoothness = 10f;
+
+        [Header("Rotation settings")]
+        [SerializeField] private float _maxDegreeOffset = 5f;
+        [SerializeField] private float _holdLightSeconds = 3f;
+        [SerializeField] private float _rotationSpeed = 10f;
 
         [Header("References")]
-        [SerializeField] private MagicRing _outerRing;
-        [SerializeField] private MagicRing _innerRing;
+        [SerializeField] private Transform _outerRingContainer;
+        [SerializeField] private Transform _innerRingContainer;
+        [SerializeField] private Transform _outerWheel;
+        [SerializeField] private Transform _innerWheel;
 
         [SerializeField] private DragHandler _outerLightDragHandler;
         [SerializeField] private DragHandler _innerLightDragHandler;
@@ -47,6 +66,11 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
         public Camera GetCamera()
         {
             return _mainCamera;
+        }
+
+        public async UniTask DisappearAsync()
+        {
+            await AppearanceTweener.DisappearAsync(beforeDisappearDelay, lockContainer, cts.Token);
         }
     }
 }
