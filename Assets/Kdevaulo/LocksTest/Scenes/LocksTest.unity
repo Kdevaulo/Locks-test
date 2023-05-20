@@ -153,7 +153,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lockPrefabs:
+  - {fileID: 4286644206407858126, guid: b9799d96accde62468abe4452702e5d6, type: 3}
+  - {fileID: 116083751753647127, guid: 70be5e63195d1294899ea10d8ec51c1d, type: 3}
   - {fileID: 608207337623058022, guid: 68aadd6910258a74b94fb145d369fece, type: 3}
+  - {fileID: 1188969747127303258, guid: d0909234b2f3bbe4f8dec846d5ca6915, type: 3}
+  - {fileID: 352371439462803768, guid: 1b53441c9bd42434c9adbba0208291f3, type: 3}
+  - {fileID: 608207337623058022, guid: fdfa4eee9780f5b40baa2bf0edfb472f, type: 3}
   _mainCamera: {fileID: 963194227}
   _skipButton: {fileID: 523837674}
   _startButton: {fileID: 413191333}
