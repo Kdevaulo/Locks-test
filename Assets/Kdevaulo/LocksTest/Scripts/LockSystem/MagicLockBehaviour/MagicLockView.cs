@@ -22,6 +22,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
         public Transform OuterWheel => _outerWheel;
         public Transform InnerWheel => _innerWheel;
 
+        public MagicLockSoundPlayer SoundPlayer => _soundPlayer;
+
         [Header("Drag settings")]
         [SerializeField] private float _dragSmoothness = 10f;
 
@@ -38,6 +40,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
 
         [SerializeField] private DragHandler _outerLightDragHandler;
         [SerializeField] private DragHandler _innerLightDragHandler;
+
+        [SerializeField] private MagicLockSoundPlayer _soundPlayer;
 
         private Camera _mainCamera;
 

@@ -4,7 +4,6 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
     {
         public static readonly int[] CorrectZRotations =
         {
-            0,
             45,
             90,
             135,

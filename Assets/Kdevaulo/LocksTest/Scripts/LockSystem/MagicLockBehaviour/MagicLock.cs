@@ -27,10 +27,14 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
         private readonly Transform _outerWheel;
         private readonly Transform _innerWheel;
 
+        private readonly MagicLockSoundPlayer _soundPlayer;
+
         private readonly float _dragSmoothness;
         private readonly float _maxDegreeOffset;
         private readonly float _holdLightSeconds;
         private readonly float _rotationSpeed;
+
+        private const float MaxAngle = 360f;
 
         private Camera _mainCamera;
 
@@ -53,6 +57,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
 
             _outerDragHandler = lockView.OuterLightDragHandler;
             _innerDragHandler = lockView.InnerLightDragHandler;
+
+            _soundPlayer = lockView.SoundPlayer;
 
             _dragSmoothness = lockView.DragSmoothness;
             _maxDegreeOffset = lockView.MaxDegreeOffset;
@@ -85,10 +91,13 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
 
         void ILock.Dispose()
         {
-            _outerMover.StopMovement(Vector2.zero);
-            _innerMover.StopMovement(Vector2.zero);
+            if (_outerMover != null && _innerMover != null)
+            {
+                _outerMover.StopMovement(Vector2.zero);
+                _innerMover.StopMovement(Vector2.zero);
 
-            UnsubscribeEvents();
+                UnsubscribeEvents();
+            }
 
             TryCancelToken();
         }
@@ -138,15 +147,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
             _innerTimeCounter =
                 CalculateHoldTime(_innerRingContainer.rotation.eulerAngles.z, _innerRotationRange, _innerTimeCounter);
 
-            if (_outerTimeCounter > 0)
-            {
-                RotateTransform(_outerWheel);
-            }
-
-            if (_innerTimeCounter > 0)
-            {
-                RotateTransform(_innerWheel);
-            }
+            HandleCounterValues();
 
             if (CheckTimer(_outerTimeCounter) &
                 CheckTimer(_innerTimeCounter))
@@ -174,10 +175,51 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
             if (targetRange.y - _maxDegreeOffset * 2 < 0) // note: targetRange through 0 (360)
             {
                 return rotation >= 0 && rotation <= targetRange.y ||
-                       rotation >= targetRange.x && rotation <= 360;
+                       rotation >= CastToTargetRange(targetRange.x) && rotation <= MaxAngle;
             }
 
             return rotation >= targetRange.x && rotation <= targetRange.y;
+        }
+
+        private float CastToTargetRange(float value)
+        {
+            if (value >= 0 && value <= MaxAngle)
+            {
+                return value;
+            }
+
+            if (value < 0)
+            {
+                Debug.Log($"value= {value}, value % 360 = {value % MaxAngle}");
+                return -(-value % MaxAngle);
+            }
+
+            return value % MaxAngle;
+        }
+
+        private void HandleCounterValues()
+        {
+            if (_outerTimeCounter > 0)
+            {
+                _soundPlayer.TryStartPlayingBigWheelSound();
+
+                RotateTransform(_outerWheel);
+            }
+            else
+            {
+                _soundPlayer.TryStopPlayingBigWheelSound();
+            }
+
+            if (_innerTimeCounter > 0)
+            {
+                _soundPlayer.TryStartPlayingSmallWheelSound();
+
+                RotateTransform(_innerWheel);
+            }
+            else
+            {
+                _soundPlayer.TryStopPlayingSmallWheelSound();
+            }
         }
 
         private void RotateTransform(Transform targetTransform)
@@ -193,6 +235,10 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
         private void FinishGame()
         {
             _isRotating = false;
+
+            _soundPlayer.TryStopPlayingBigWheelSound();
+            _soundPlayer.TryStopPlayingSmallWheelSound();
+            _soundPlayer.PlayOpenSound();
 
             _lockView.DisappearAsync().ContinueWith(LockOpened.Invoke);
         }
