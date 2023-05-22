@@ -35,11 +35,11 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
         public MoveObjectLockSoundPlayer SoundPlayer => _soundPlayer;
 
         [Header("User settings")]
-        [SerializeField] private float _userMovingSpeed = 0.1f;
+        [SerializeField] private float _userMovingSpeed = 0.05f;
 
         [Header("Filler settings")]
-        [SerializeField] private float _fillStep = 0.1f;
-        [SerializeField] private float _fillTickSeconds = 0.1f;
+        [SerializeField] private float _fillStep = 0.0125f;
+        [SerializeField] private float _fillTickSeconds = 0.05f;
 
         [SerializeField] private Vector2 _startFillPoint;
         [SerializeField] private Vector2 _endFillPoint;

@@ -28,7 +28,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
         [SerializeField] private float _dragSmoothness = 10f;
 
         [Header("Rotation settings")]
-        [SerializeField] private float _maxDegreeOffset = 5f;
+        [SerializeField] private float _maxDegreeOffset = 3f;
         [SerializeField] private float _holdLightSeconds = 3f;
         [SerializeField] private float _rotationSpeed = 10f;
 

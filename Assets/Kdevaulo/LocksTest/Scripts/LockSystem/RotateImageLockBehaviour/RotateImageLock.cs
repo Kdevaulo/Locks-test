@@ -49,7 +49,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.RotateImageLockBehaviour
 
             _checkTimer.Elapsed += CheckIfLockOpened;
 
-            _lockView.RotateRingsAtRandomAnglesAsync().ContinueWith(StartGame);
+            RotateRingsAsync().Forget();
 
             _soundPlayer.PlayStartRotationSound();
         }
@@ -128,9 +128,26 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.RotateImageLockBehaviour
                 rotator.DisableRotation();
             }
 
-            _lockView.DisappearAsync().ContinueWith(LockOpened.Invoke);
+            AnimateGameEndAsync().Forget();
 
             _soundPlayer.PlayOpenSound();
+        }
+
+        private async UniTask AnimateGameEndAsync()
+        {
+            await _lockView.DisappearAsync();
+
+            LockOpened.Invoke();
+        }
+
+        private async UniTask RotateRingsAsync()
+        {
+            await _lockView.RotateRingsAtRandomAnglesAsync();
+
+            if (_lockView)
+            {
+                StartGame();
+            }
         }
 
         private void StartGame()

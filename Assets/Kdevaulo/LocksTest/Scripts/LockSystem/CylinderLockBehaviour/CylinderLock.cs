@@ -77,7 +77,15 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
             _lockOpened = true;
 
             _soundPlayer.PlayOpenSound();
-            _lockView.DisappearAsync().ContinueWith(LockOpened.Invoke);
+            
+            AnimateGameEndAsync().Forget();
+        }
+        
+        private async UniTask AnimateGameEndAsync()
+        {
+            await _lockView.DisappearAsync();
+
+            LockOpened.Invoke();
         }
 
         private void HandleOpenLockKeyPressed(bool value)

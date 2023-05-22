@@ -89,7 +89,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ResistanceClickLockBehaviour
 
                 _soundPlayer.PlayWinSound();
 
-                _lockView.DisappearAsync().ContinueWith(LockOpened.Invoke);
+                AnimateGameEndAsync().Forget();
             }
 
             if (_currentRotation >= _scaleRotationRange.y)
@@ -98,6 +98,13 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ResistanceClickLockBehaviour
 
                 _soundPlayer.PlayLoseSound();
             }
+        }
+
+        private async UniTask AnimateGameEndAsync()
+        {
+            await _lockView.DisappearAsync();
+
+            LockOpened.Invoke();
         }
 
         private void StopBattle()

@@ -218,7 +218,7 @@ MonoBehaviour:
   _userMovingSpeed: 0.05
   _fillStep: 0.0125
   _fillTickSeconds: 0.05
-  _startFillPoint: {x: 0, y: -2.56}
+  _startFillPoint: {x: 0, y: -2.6}
   _endFillPoint: {x: 0, y: 0}
   _correctAreaRadius: 1.25
   _maxAreaRadius: 1.5
@@ -1325,7 +1325,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8400170855377488094}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.56, z: 0}
+  m_LocalPosition: {x: 0, y: -2.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7545010571876484770}

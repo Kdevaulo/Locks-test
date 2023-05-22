@@ -183,15 +183,9 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
 
         private float CastToTargetRange(float value)
         {
-            if (value >= 0 && value <= MaxAngle)
-            {
-                return value;
-            }
-
             if (value < 0)
             {
-                Debug.Log($"value= {value}, value % 360 = {value % MaxAngle}");
-                return -(-value % MaxAngle);
+                return value % MaxAngle + MaxAngle;
             }
 
             return value % MaxAngle;
@@ -240,7 +234,14 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MagicLockBehaviour
             _soundPlayer.TryStopPlayingSmallWheelSound();
             _soundPlayer.PlayOpenSound();
 
-            _lockView.DisappearAsync().ContinueWith(LockOpened.Invoke);
+            AnimateGameEndAsync().Forget();
+        }
+
+        private async UniTask AnimateGameEndAsync()
+        {
+            await _lockView.DisappearAsync();
+
+            LockOpened.Invoke();
         }
 
         private void UnsubscribeEvents()

@@ -63,7 +63,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.RotateImageLockBehaviour
         {
             var tasks = new List<UniTask>(3);
 
-            ForEachInImageRingCollection(x => tasks.Add(RandomTransformZRotator.DoRandomRotateAsync(x.Transform)));
+            ForEachInImageRingCollection(x =>
+                tasks.Add(RandomTransformZRotator.DoRandomRotateAsync(x.Transform, cts.Token)));
 
             await UniTask.WhenAll(tasks);
         }

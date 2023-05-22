@@ -243,7 +243,14 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.ClickLockBehaviour
         {
             StopTimers();
 
-            _lockView.DisappearAsync().ContinueWith(LockOpened.Invoke);
+            AnimateGameEndAsync().Forget();
+        }
+
+        private async UniTask AnimateGameEndAsync()
+        {
+            await _lockView.DisappearAsync();
+
+            LockOpened.Invoke();
         }
 
         private void StopTimers()
