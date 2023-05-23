@@ -44,8 +44,6 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
         void IDisposable.Dispose()
         {
             _skipButton.onClick.RemoveListener(SkipLock);
-
-            YandexGame.CloseFullAdEvent -= OnAdvertClose;
         }
 
         public void Initialize(GameObject[] lockViewPrefabs)
@@ -54,8 +52,6 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
             _randomizer = new Randomizer(0, _lockViewPrefabs.Length);
 
             _skipButton.onClick.AddListener(SkipLock);
-
-            YandexGame.CloseFullAdEvent += OnAdvertClose;
 
             InitializeNewLock();
         }
@@ -68,18 +64,10 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem
         private void SkipLock()
         {
             _currentScore = 0;
-            UpdateScore(0);
+            UpdateScore(_currentScore);
 
             YandexGame.FullscreenShow();
 
-            if (!YandexGame.nowFullAd)
-            {
-                OnAdvertClose();
-            }
-        }
-
-        private void OnAdvertClose()
-        {
             InitializeNewLock();
         }
 

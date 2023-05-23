@@ -709,7 +709,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 82cc91725ab2f0c41920038a250d768b, type: 3}
     m_FontSize: 66
     m_FontStyle: 0
     m_BestFit: 0
@@ -721,7 +721,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 1
+  m_Text: 0
 --- !u!222 &913397353
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -813,7 +813,7 @@ MonoBehaviour:
   de: 
   hi: 
   fontNumber: 66
-  uniqueFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  uniqueFont: {fileID: 0}
   textHeight: 20
   processTranslateLabel: 
   componentTextField: 0
@@ -839,7 +839,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 82cc91725ab2f0c41920038a250d768b, type: 3}
     m_FontSize: 66
     m_FontStyle: 0
     m_BestFit: 0
@@ -1073,7 +1073,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 82cc91725ab2f0c41920038a250d768b, type: 3}
     m_FontSize: 52
     m_FontStyle: 0
     m_BestFit: 0
@@ -1138,7 +1138,7 @@ MonoBehaviour:
   de: 
   hi: 
   fontNumber: 52
-  uniqueFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  uniqueFont: {fileID: 0}
   textHeight: 20
   processTranslateLabel: 
   componentTextField: 0
@@ -1546,7 +1546,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 82cc91725ab2f0c41920038a250d768b, type: 3}
     m_FontSize: 46
     m_FontStyle: 0
     m_BestFit: 0
@@ -1611,7 +1611,7 @@ MonoBehaviour:
   de: 
   hi: 
   fontNumber: 46
-  uniqueFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  uniqueFont: {fileID: 0}
   textHeight: 20
   processTranslateLabel: 
   componentTextField: 0
