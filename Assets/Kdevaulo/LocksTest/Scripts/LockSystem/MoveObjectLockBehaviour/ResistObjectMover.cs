@@ -35,7 +35,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.MoveObjectLockBehaviour
 
         public Vector2 GetNextPosition()
         {
-            return _currentDirection * _currentSpeed;
+            return _currentDirection * _currentSpeed / Screen.currentResolution.width;
         }
 
         public void Dispose()
