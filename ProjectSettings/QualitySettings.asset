@@ -52,6 +52,7 @@ QualitySettings:
     PS4: 0
     PS5: 0
     PSP2: 0
+    Server: 0
     Stadia: 0
     Standalone: 0
     WebGL: 0
