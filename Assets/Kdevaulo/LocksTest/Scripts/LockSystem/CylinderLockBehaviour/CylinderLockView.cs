@@ -53,6 +53,8 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
         [SerializeField] private Transform _keyholeRotationContainer;
         [SerializeField] private Transform _toolRotationContainer;
 
+        [SerializeField] private Canvas _interactionCanvas;
+
         private float _currentRotationProgress = 0f;
 
         private void Awake()
@@ -63,6 +65,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
         void ICameraGetter.SetCamera(Camera targetCamera)
         {
             SetCameraToCanvas(targetCamera, hintCanvas);
+            SetCameraToCanvas(targetCamera, _interactionCanvas);
         }
 
         void ILockView.Dispose()

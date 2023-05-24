@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
 {
@@ -7,9 +9,22 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
                       nameof(UserInputHandler) +
                       " in " +
                       nameof(CylinderLockBehaviour))]
-    public class UserInputHandler : MonoBehaviour
+    [RequireComponent(typeof(Button))]
+    public class UserInputHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         [SerializeField] private CylinderLockView _lockView;
+
+        private bool _isButtonHold;
+
+        public void OnPointerDown(PointerEventData data)
+        {
+            _isButtonHold = true;
+        }
+
+        public void OnPointerUp(PointerEventData data)
+        {
+            _isButtonHold = false;
+        }
 
         private void Update()
         {
@@ -17,7 +32,7 @@ namespace Kdevaulo.LocksTest.Scripts.LockSystem.CylinderLockBehaviour
 
             _lockView.MoveLockPick(-horizontal);
 
-            _lockView.HandleOpenLockKey(Input.GetKey(KeyCode.Space));
+            _lockView.HandleOpenLockKey(Input.GetKey(KeyCode.Space) || _isButtonHold);
         }
     }
 }
