@@ -59,6 +59,9 @@ MonoBehaviour:
   CloseFullscreenAd:
     m_PersistentCalls:
       m_Calls: []
+  ErrorFullscreenAd:
+    m_PersistentCalls:
+      m_Calls: []
   OpenVideoAd:
     m_PersistentCalls:
       m_Calls: []
